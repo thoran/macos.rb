@@ -2,26 +2,22 @@
 # OSX::Dmg
 
 # 20130622
-# 0.2.0
+# 0.3.0
 
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.  
 
-# Changes since 0.1: 
-# 1. + attr_accessor :verbose in class-level.  
-# 2. ~ initialize, so that it actually does something!  
-# 3. + OSX::Dmg#mount.  
-# 4. + OSX::Dmg#install.  
-# 5. + OSX::Dmg#dismount.  
-# 6. + working self-run section.  
-# 7. /mount_disk_image/mount/.  
-# 8. /run_installer/install/.  
-# 9. /dismount_disk_image/dismount/.  
-# 10. ~ OSX::Dmg#image_name, so as it makes use of directly set values via options rather than derived from the url.  
-# 11. ~ OSX::Dmg#package, so as it makes use of directly set values via options rather than derived from the url.  
-# 12. ~ OSX::Dmg#pkg_name, so as it makes use of directly set values via options rather than derived from the url.  
+# Changes since 0.2: 
+# 1. ~ OSX::Dmg#initialize, so as to remove url and to add path_to_dmg.  
+# 2. require 'Array/extract_optionsX'.  
+# 3. - OSX::Dmg#url, since something to handle disk images shouldn't know anything about URLs probably...  
+# 4. ~ OSX::Dmg.mount: /disk_image_name/path_to_dmg/.  
+# 5. ~ OSX::Dmg.install, so as the pkg_name argument can be optional, since on many occasions it can be derived happily from adding '.pkg' to the package name.  
+# 6. ~ OSX::Dmg.install, so as the pwd is returned to the starting working directory.  
+# 7. + OSX::Dmg#path_to_dmg (and aliases).  
+# 8. + OSX::Dmg#path_to_dmg= (and aliases).  
 
-require 'Array/extract_optionsX'
 require 'Array/all_but_last'
+require 'Module/alias_methods'
 require 'shellwords'
 
 module OSX
@@ -31,16 +27,18 @@ module OSX
 
       attr_accessor :verbose
 
-      def mount(disk_image_name)
-        puts "hdiutil attach #{Shellwords.escape(disk_image_name)}" if verbose
-        system "hdiutil attach #{Shellwords.escape(disk_image_name)}"
+      def mount(path_to_dmg)
+        puts "hdiutil attach #{Shellwords.escape(path_to_dmg)}" if verbose
+        system "hdiutil attach #{Shellwords.escape(path_to_dmg)}"
       end
 
-      def install(package, pkg_name)
+      def install(package, pkg_name = nil)
+        starting_working_directory = Dir.pwd
         puts "cd /Volumes/#{package}" if verbose
-        Dir.chdir "/Volumes/#{package}"
+        Dir.chdir("/Volumes/#{package}")
         puts "sudo installer -pkg #{Shellwords.escape(pkg_name)} -target '/'" if verbose
         system "sudo installer -pkg #{Shellwords.escape(pkg_name)} -target '/'"
+        Dir.chdir(starting_working_directory)
       end
 
       def dismount(package)        
@@ -50,30 +48,25 @@ module OSX
 
     end # class << self
 
-    attr_reader :args, :options
-    attr_writer :url, :image_name, :package, :pkg_name
+    attr_reader :options
+    attr_writer :package, :pkg_name
 
-    def initialize(*args)
-      @args = args
-      @options = args.extract_options!
+    def initialize(options = {})
+      @options = options
     end
 
-    def url
-      if args.size > 0
-        args.first
-      else
-        options[:url]
-      end
+    def path_to_dmg
+      @path_to_dmg ||= options[:path_to_dmg] || options[:disk_image_name] || options[:path_to_dmg]
     end
-    alias_method :set_url, :url
+    alias_methods :image_name, :disk_image_name, :path_to_dmg
 
-    def image_name
-      @image_name ||= options[:image_name] || options[:disk_image_name] || url.split('/').last
+    def path_to_dmg=(path_to_dmg)
+      @path_to_dmg = path_to_dmg
     end
-    alias_method :disk_image_name, :image_name
+    alias_methods :image_name=, :disk_image_name=, :path_to_dmg=
 
     def package
-      @package ||= options[:package] || url.split('/').all_but_last.last
+      @package ||= options[:package]
     end
 
     def pkg_name
@@ -81,7 +74,7 @@ module OSX
     end
 
     def mount
-      OSX::Dmg.mount(image_name)
+      OSX::Dmg.mount(path_to_dmg)
     end
 
     def install
@@ -100,7 +93,7 @@ if __FILE__ == $0
   url = 'https://distfiles.macports.org/MacPorts/MacPorts-2.0.4-10.7-Lion.dmg'
   URI.write(url)
   OSX::Dmg.verbose = true
-  dmg = OSX::Dmg.new(url, package: 'MacPorts-2.0.4')
+  dmg = OSX::Dmg.new(path_to_dmg: 'MacPorts-2.0.4-10.7-Lion.dmg', package: 'MacPorts-2.0.4')
   dmg.mount
   #dmg.install
   dmg.dismount
