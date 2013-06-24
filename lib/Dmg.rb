@@ -2,15 +2,15 @@
 # OSX::Dmg
 
 # 20130623, 24
-# 0.4.0
+# 0.5.0
 
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.  
 
-# Changes since 0.3: 
-# 1. + OSX::Dmg.install.  
-# 2. + OSX::Dmg#run_installer, so as it does what OSX::Dmg#install used to do.  
-# 3. ~ OSX::Dmg.install, so as it now mounts, installs, and ummounts.  
-# 4. /dismount/unmount/.  
+# Changes since 0.4: 
+# 1. + alias_method :attach, :mount.  
+# 2. + alias_method :detach, :unmount.  
+# 3. + alias_method :filename, :path_to_dmg.  
+# 4. + alias_method :filename=, :path_to_dmg=.  
 
 require 'Array/all_but_last'
 require 'Module/alias_methods'
@@ -27,6 +27,7 @@ module OSX
         puts "hdiutil attach #{Shellwords.escape(path_to_dmg)}" if verbose
         system "hdiutil attach #{Shellwords.escape(path_to_dmg)}"
       end
+      alias_method :attach, :mount
 
       def run_installer(package, pkg_name = nil)
         starting_working_directory = Dir.pwd
@@ -41,6 +42,7 @@ module OSX
         puts "hdiutil detach -Force /Volumes/#{Shellwords.escape(package)}" if verbose
         system "hdiutil detach -Force /Volumes/#{Shellwords.escape(package)}"
       end
+      alias_method :detach, :unmount
 
       def install(options = {})
         dmg = new(options)
@@ -59,14 +61,14 @@ module OSX
     end
 
     def path_to_dmg
-      @path_to_dmg ||= options[:path_to_dmg] || options[:disk_image_name] || options[:path_to_dmg]
+      @path_to_dmg ||= options[:filename] || options[:path_to_dmg] || options[:disk_image_name] || options[:path_to_dmg]
     end
-    alias_methods :image_name, :disk_image_name, :path_to_dmg
+    alias_methods :filename, :image_name, :disk_image_name, :path_to_dmg
 
     def path_to_dmg=(path_to_dmg)
       @path_to_dmg = path_to_dmg
     end
-    alias_methods :image_name=, :disk_image_name=, :path_to_dmg=
+    alias_methods :filename=, :image_name=, :disk_image_name=, :path_to_dmg=
 
     def package
       @package ||= options[:package]
@@ -79,6 +81,7 @@ module OSX
     def mount
       OSX::Dmg.mount(path_to_dmg)
     end
+    alias_method :attach, :mount
 
     def run_installer
       OSX::Dmg.run_installer(package, pkg_name)
@@ -87,6 +90,7 @@ module OSX
     def unmount
       OSX::Dmg.unmount(package)
     end
+    alias_method :detach, :unmount
 
     def install
       mount
