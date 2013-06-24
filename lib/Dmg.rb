@@ -1,20 +1,16 @@
 # OSX/Dmg.rb
 # OSX::Dmg
 
-# 20130622
-# 0.3.0
+# 20130623, 24
+# 0.4.0
 
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.  
 
-# Changes since 0.2: 
-# 1. ~ OSX::Dmg#initialize, so as to remove url and to add path_to_dmg.  
-# 2. require 'Array/extract_optionsX'.  
-# 3. - OSX::Dmg#url, since something to handle disk images shouldn't know anything about URLs probably...  
-# 4. ~ OSX::Dmg.mount: /disk_image_name/path_to_dmg/.  
-# 5. ~ OSX::Dmg.install, so as the pkg_name argument can be optional, since on many occasions it can be derived happily from adding '.pkg' to the package name.  
-# 6. ~ OSX::Dmg.install, so as the pwd is returned to the starting working directory.  
-# 7. + OSX::Dmg#path_to_dmg (and aliases).  
-# 8. + OSX::Dmg#path_to_dmg= (and aliases).  
+# Changes since 0.3: 
+# 1. + OSX::Dmg.install.  
+# 2. + OSX::Dmg#run_installer, so as it does what OSX::Dmg#install used to do.  
+# 3. ~ OSX::Dmg.install, so as it now mounts, installs, and ummounts.  
+# 4. /dismount/unmount/.  
 
 require 'Array/all_but_last'
 require 'Module/alias_methods'
@@ -32,7 +28,7 @@ module OSX
         system "hdiutil attach #{Shellwords.escape(path_to_dmg)}"
       end
 
-      def install(package, pkg_name = nil)
+      def run_installer(package, pkg_name = nil)
         starting_working_directory = Dir.pwd
         puts "cd /Volumes/#{package}" if verbose
         Dir.chdir("/Volumes/#{package}")
@@ -41,9 +37,16 @@ module OSX
         Dir.chdir(starting_working_directory)
       end
 
-      def dismount(package)        
+      def unmount(package)        
         puts "hdiutil detach -Force /Volumes/#{Shellwords.escape(package)}" if verbose
         system "hdiutil detach -Force /Volumes/#{Shellwords.escape(package)}"
+      end
+
+      def install(options = {})
+        dmg = new(options)
+        dmg.mount
+        dmg.run_installer
+        dmg.unmount
       end
 
     end # class << self
@@ -77,12 +80,18 @@ module OSX
       OSX::Dmg.mount(path_to_dmg)
     end
 
-    def install
-      OSX::Dmg.install(package, pkg_name)
+    def run_installer
+      OSX::Dmg.run_installer(package, pkg_name)
     end
 
-    def dismount
-      OSX::Dmg.dismount(package)
+    def unmount
+      OSX::Dmg.unmount(package)
+    end
+
+    def install
+      mount
+      run_installer
+      unmount
     end
 
   end # class Dmg
