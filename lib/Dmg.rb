@@ -1,16 +1,18 @@
 # OSX/Dmg.rb
 # OSX::Dmg
 
-# 20130623, 24
-# 0.5.0
+# 20140408
+# 0.5.1
 
-# History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.  
+# History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.
 
-# Changes since 0.4: 
-# 1. + alias_method :attach, :mount.  
-# 2. + alias_method :detach, :unmount.  
-# 3. + alias_method :filename, :path_to_dmg.  
-# 4. + alias_method :filename=, :path_to_dmg=.  
+# Changes since 0.4:
+# 1. + alias_method :attach, :mount.
+# 2. + alias_method :detach, :unmount.
+# 3. + alias_method :filename, :path_to_dmg.
+# 4. + alias_method :filename=, :path_to_dmg=.
+# 0/1
+# 5. ~ path_to_dmg(), because it had a copy/paste error: /path_to_dmg/image_name/.
 
 require 'Array/all_but_last'
 require 'Module/alias_methods'
@@ -61,7 +63,7 @@ module OSX
     end
 
     def path_to_dmg
-      @path_to_dmg ||= options[:filename] || options[:path_to_dmg] || options[:disk_image_name] || options[:path_to_dmg]
+      @path_to_dmg ||= options[:filename] || options[:image_name] || options[:disk_image_name] || options[:path_to_dmg]
     end
     alias_methods :filename, :image_name, :disk_image_name, :path_to_dmg
 
