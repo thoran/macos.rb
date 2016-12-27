@@ -2,7 +2,7 @@
 # OSX::Hardware
 
 # 20161227
-# 0.0.0
+# 0.0.1
 
 require 'String/captures'
 
@@ -15,7 +15,7 @@ module OSX
         hardware_ports = []
         hardware_port = nil
         output.each_line do |line|
-          if line == "\n"
+          if line == "\n" || line == ""
             hardware_port = new
           else
             label, value = line.captures(/^(.+): (.+)/)
@@ -60,6 +60,6 @@ module OSX
 end
 
 if __FILE__ == $0
-  hardware_ports = OSX::HardwarePort.all
-  en4 = OSX::HardwarePort.find_by_device('en4')
+  p hardware_ports = OSX::HardwarePort.all
+  p en4 = OSX::HardwarePort.find_by_device('en4')
 end
