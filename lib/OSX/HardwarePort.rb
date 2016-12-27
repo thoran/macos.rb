@@ -2,7 +2,7 @@
 # OSX::Hardware
 
 # 20161227
-# 0.0.1
+# 0.1.0
 
 require 'String/captures'
 
@@ -54,6 +54,10 @@ module OSX
       @hardware_port = hardware_port
       @device = device
       @ethernet_address = ethernet_address
+    end
+
+    def name
+      @hardware_port
     end
 
   end
