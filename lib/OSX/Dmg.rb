@@ -1,8 +1,8 @@
 # OSX/Dmg.rb
 # OSX::Dmg
 
-# 20140408
-# 0.5.1
+# 20180209
+# 0.5.2
 
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.
 
@@ -13,6 +13,8 @@
 # 4. + alias_method :filename=, :path_to_dmg=.
 # 0/1
 # 5. ~ path_to_dmg(), because it had a copy/paste error: /path_to_dmg/image_name/.
+# 1/2
+# 6. Moved Dmg.rb into the newly created OSX directory.
 
 require 'Array/all_but_last'
 require 'Module/alias_methods'
