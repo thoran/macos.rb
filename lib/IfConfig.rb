@@ -1,10 +1,10 @@
 # IfConfig.rb
 # IfConfig
 
-# 20161227
-# 0.0.0
+# 20180209
+# 0.1.0
 
-require 'String/captures'
+require 'Thoran/String/Captures/captures'
 
 class IfConfig
 
