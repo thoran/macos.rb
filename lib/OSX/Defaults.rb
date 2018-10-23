@@ -2,24 +2,33 @@
 # OSX::Defaults
 
 # 20181023
-# 0.0.0
+# 0.1.0
 
+# Transformations:
+
+# 1. database/plist
 # database --> plist
+# plist --> database
+
+# 2. plist/hash
 # plist --> hash
 # hash --> plist
-# hash --> database
+
+# 3. yaml/database
 # yaml --> database
-# yaml --> plist
+# database --> yaml
 
 require 'cfpropertylist'
 
 module OSX
   class Defaults
 
+    DEFAULT_PLIST_DIRECTORY = '/tmp'
+
     class << self
 
       def domains
-        `defaults domains`.split(', ')
+        `defaults domains`.split('\n')
       end
       alias_method :all_domains, :domains
 
@@ -29,17 +38,15 @@ module OSX
         end
       end
 
-      def bulk_export_to_plist_files(export_directory = '/tmp')
+      def bulk_export_to_plist_files
         domains.each do |domain|
-          `defaults export #{domain} #{export_directory}/#{domain}.plist`
+          self.new(domain).export
         end
       end
 
-      def bulk_import_from_plist_files(import_directory = '/tmp')
+      def bulk_import_from_plist_files
         domains.each do |domain|
-          if File.exist?("#{import_directory}/#{domain}.plist")
-            `defaults import #{domain} #{import_directory}/#{domain}.plist`
-          end
+          self.new(domain).import
         end
       end
 
@@ -49,9 +56,35 @@ module OSX
       @domain = args[:domain]
     end
 
+    def export
+      if domain_valid?
+        `defaults export #{@domain} #{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist`
+      else
+        raise "Domain: #{@domain} was not found in the defaults database."
+      end
+      true
+    end
+
+    def import
+      if File.exist?("#{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist")
+        `defaults import #{@domain} #{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist`
+      else
+        raise "File: #{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist was not found in the filesystem."
+      end
+      true
+    end
+
     def to_h
-      plist = CFPropertyList::List.new(file: "/tmp/#{domain}")
+      plist = CFPropertyList::List.new(file: "#{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist")
       CFPropertyList.native_types(plist.value)
+    end
+
+    def domain_valid?
+      self.class.domains.include?(@domain) || global_domain?
+    end
+
+    def global_domain?
+      @domain == '-globalDomain'
     end
 
   end
@@ -59,5 +92,11 @@ end
 
 if __FILE__ == $0
   p OSX::Defaults.domains
-  p OSX::Defaults.new(domain: '-globalDomain')
+  defaults = OSX::Defaults.new(domain: '-globalDomain')
+  p defaults.domain_valid?
+  p defaults.global_domain?
+  defaults.export
+  p defaults.to_h
+  defaults.import
+  p defaults.to_h
 end
