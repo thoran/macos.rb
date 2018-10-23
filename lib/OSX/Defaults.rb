@@ -2,7 +2,7 @@
 # OSX::Defaults
 
 # 20181023
-# 0.1.0
+# 0.2.0
 
 # Transformations:
 
@@ -17,6 +17,9 @@
 # 3. yaml/database
 # yaml --> database
 # database --> yaml
+
+# Todo;
+# 1. Handle compound/vector values in to_yaml().  Currently dumping hashes when it should be creating another level or more levels of hierarchy.
 
 require 'cfpropertylist'
 
@@ -79,6 +82,16 @@ module OSX
       CFPropertyList.native_types(plist.value)
     end
 
+    def to_yaml
+      yaml_parts = []
+      yaml_parts << "#{@domain}:"
+      to_h.each do |k,v|
+        yaml_parts << "  - #{k}: #{v}"
+      end
+      yaml_parts.join("\n")
+    end
+    alias_method :to_yml, :to_yaml
+
     def domain_valid?
       self.class.domains.include?(@domain) || global_domain?
     end
@@ -99,4 +112,5 @@ if __FILE__ == $0
   p defaults.to_h
   defaults.import
   p defaults.to_h
+  puts defaults.to_yaml
 end
