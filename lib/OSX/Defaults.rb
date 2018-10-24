@@ -2,7 +2,7 @@
 # OSX::Defaults
 
 # 20181023
-# 0.2.0
+# 0.3.0
 
 # Transformations:
 
@@ -22,11 +22,13 @@
 # 1. Handle compound/vector values in to_yaml().  Currently dumping hashes when it should be creating another level or more levels of hierarchy.
 
 require 'cfpropertylist'
+require 'yaml'
 
 module OSX
   class Defaults
 
     DEFAULT_PLIST_DIRECTORY = '/tmp'
+    DEFAULT_YAML_FILENAME = File.expand_path(File.join('~', '.config', 'osx_defaults.yml'))
 
     class << self
 
@@ -82,11 +84,21 @@ module OSX
       CFPropertyList.native_types(plist.value)
     end
 
-    def to_yaml
-      yaml_parts = []
-      yaml_parts << "#{@domain}:"
-      to_h.each do |k,v|
-        yaml_parts << "  - #{k}: #{v}"
+    def to_yaml(yaml_parts = [], hash = to_h, recursion_depth = 1)
+      yaml_parts << "#{@domain}:" if recursion_depth == 1
+      hash.each do |k,v|
+        indent = ' ' * recursion_depth * 2
+        case v
+        when Hash
+          yaml_parts << "#{indent}- #{k}: "
+          yaml_parts << to_yaml(yaml_parts, v, recursion_depth += 1)
+        when Array
+          v.each do |e|
+            yaml_parts << "#{indent}- #{e}"
+          end
+        else
+          yaml_parts << "#{indent}- #{k}: #{v}"
+        end
       end
       yaml_parts.join("\n")
     end
@@ -104,13 +116,6 @@ module OSX
 end
 
 if __FILE__ == $0
-  p OSX::Defaults.domains
   defaults = OSX::Defaults.new(domain: '-globalDomain')
-  p defaults.domain_valid?
-  p defaults.global_domain?
-  defaults.export
-  p defaults.to_h
-  defaults.import
-  p defaults.to_h
   puts defaults.to_yaml
 end
