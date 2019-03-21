@@ -1,8 +1,8 @@
 # OSX/Defaults.rb
 # OSX::Defaults
 
-# 20181023
-# 0.3.0
+# 20190321
+# 0.3.1
 
 # Transformations:
 
@@ -55,6 +55,14 @@ module OSX
         end
       end
 
+      def from_yaml(yaml_filename = nil)
+        yaml_filename ||= DEFAULT_YAML_FILE
+        yaml_defaults = YAML.load_file(yaml_filename)
+        yaml_defaults.each do |domain, attributes|
+          self.new(domain).from_yaml
+        end
+      end
+
     end # class << self
 
     def initialize(**args)
@@ -87,22 +95,19 @@ module OSX
     def to_yaml(yaml_parts = [], hash = to_h, recursion_depth = 1)
       yaml_parts << "#{@domain}:" if recursion_depth == 1
       hash.each do |k,v|
+        to_yaml(yaml_parts, v, recursion_depth += 1) if v.is_a?(Hash)
         indent = ' ' * recursion_depth * 2
-        case v
-        when Hash
-          yaml_parts << "#{indent}- #{k}: "
-          yaml_parts << to_yaml(yaml_parts, v, recursion_depth += 1)
-        when Array
-          v.each do |e|
-            yaml_parts << "#{indent}- #{e}"
-          end
-        else
-          yaml_parts << "#{indent}- #{k}: #{v}"
-        end
+        yaml_parts << "#{indent}- #{k}: #{v}"
       end
       yaml_parts.join("\n")
     end
     alias_method :to_yml, :to_yaml
+
+    def from_yaml
+      attributes.each do |attribute|
+        key, value = attribute.to_a.first
+      end
+    end
 
     def domain_valid?
       self.class.domains.include?(@domain) || global_domain?
@@ -117,5 +122,6 @@ end
 
 if __FILE__ == $0
   defaults = OSX::Defaults.new(domain: '-globalDomain')
+  puts defaults.to_h
   puts defaults.to_yaml
 end
