@@ -1,11 +1,20 @@
-# MacOS/Hardware.rb
-# MacOS::Hardware
+# MacOS/HardwarePort.rb
+# MacOS::HardwarePort
 
 # 20190828
-# 0.2.0
+# 0.3.0
 
-# Changes since 0.1:
-# 1. /OSX/MacOS/
+# Changes since 0.2:
+# 1. /Hardware/HardwarePort at the top of the file.
+# 2. /new()/initialize()/ (Really!? I did that!? Twice!)
+# 3. ~ MacOS::HardwarePort.parse, so that it only puts in one entry per hardware port.
+# 4. - all()
+# 5. + alias_method :all, :parse
+# 6. + alias_method :hardware_ports, :parse
+# 7. + alias_method :ports, :parse
+# 8. + MacOS::HardwarePort.find_by_name
+# 9. + MacOS::HardwarePort.find_by_ethernet_address
+# 10. + MacOS::HardwarePort#mac_address
 
 require 'Thoran/String/Captures/captures'
 
@@ -14,11 +23,14 @@ module MacOS
 
     class << self
 
-      def parse(output)
+      def parse(output = nil)
+        output ||= self.output
         hardware_ports = []
         hardware_port = nil
         output.each_line do |line|
+          # p line
           if line == "\n" || line == ""
+            hardware_ports << hardware_port if hardware_port
             hardware_port = new
           else
             label, value = line.captures(/^(.+): (.+)/)
@@ -28,18 +40,25 @@ module MacOS
             when 'Ethernet Address'; hardware_port.ethernet_address = value
             end
           end
-          hardware_ports << hardware_port
         end
         hardware_ports
       end
-
-      def all
-        parse(output)
-      end
+      alias_method :all, :parse
+      alias_method :hardware_ports, :parse
+      alias_method :ports, :parse
 
       def find_by_device(device)
         all.detect{|hardware_port| hardware_port.device == device}
       end
+
+      def find_by_name(name)
+        all.detect{|hardware_port| hardware_port.name == name}
+      end
+
+      def find_by_mac_address(mac_address)
+        all.detect{|hardware_port| hardware_port.ethernet_address == mac_address}
+      end
+      alias_method :find_by_ethernet_address, :find_by_mac_address
 
       private
 
@@ -53,7 +72,7 @@ module MacOS
     attr_accessor :device
     attr_accessor :ethernet_address
 
-    def new(hardware_port:, device:, ethernet_address:)
+    def initialize(hardware_port: nil, device: nil, ethernet_address: nil)
       @hardware_port = hardware_port
       @device = device
       @ethernet_address = ethernet_address
@@ -63,10 +82,16 @@ module MacOS
       @hardware_port
     end
 
+    def mac_address
+      @ethernet_address
+    end
+
   end
 end
 
 if __FILE__ == $0
-  p hardware_ports = MacOS::HardwarePort.all
-  p en4 = MacOS::HardwarePort.find_by_device('en4')
+  require 'pp'
+  pp MacOS::HardwarePort.all
+  p MacOS::HardwarePort.find_by_device('en4')
+  p MacOS::HardwarePort.find_by_name('Wi-Fi')
 end
