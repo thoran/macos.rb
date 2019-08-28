@@ -1,10 +1,13 @@
-# OSX/LaunchControl.rb
-# OSX::LaunchControl
+# MacOS/LaunchControl.rb
+# MacOS::LaunchControl
 
-# 20130624
-# 0.0.0
+# 20190828
+# 0.1.0
 
-module OSX
+# Changes since 0.1:
+# 1. /OSX/MacOS/
+
+module MacOS
   class LaunchControl
 
     class << self
@@ -26,12 +29,12 @@ module OSX
     end
 
     def load
-      OSX::LaunchControl.load(path_to_plist)
+      MacOS::LaunchControl.load(path_to_plist)
     end
 
     def unload(path_to_plist)
-      OSX::LaunchControl.unload(path_to_plist)
+      MacOS::LaunchControl.unload(path_to_plist)
     end
 
-  end # class LaunchControl
-end # module OSX
+  end
+end

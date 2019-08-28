@@ -1,30 +1,25 @@
-# OSX/Defaults.rb
-# OSX::Defaults
+# MacOS/Defaults.rb
+# MacOS::Defaults
 
-# 20190321
-# 0.3.1
+# 20190828
+# 0.4.0
+
+# Changes since 0.3:
+# 1. /OSX/MacOS/
+
+# Todo:
+# 1. Handle compound/vector values in to_yaml().  Currently dumping hashes when it should be creating another level or more levels of hierarchy.
 
 # Transformations:
+# 1. database <--> plist
+# 2. plist <--> hash
+# 3. yaml <--> database
 
-# 1. database/plist
-# database --> plist
-# plist --> database
-
-# 2. plist/hash
-# plist --> hash
-# hash --> plist
-
-# 3. yaml/database
-# yaml --> database
-# database --> yaml
-
-# Todo;
-# 1. Handle compound/vector values in to_yaml().  Currently dumping hashes when it should be creating another level or more levels of hierarchy.
 
 require 'cfpropertylist'
 require 'yaml'
 
-module OSX
+module MacOS
   class Defaults
 
     DEFAULT_PLIST_DIRECTORY = '/tmp'
@@ -121,7 +116,9 @@ module OSX
 end
 
 if __FILE__ == $0
-  defaults = OSX::Defaults.new(domain: '-globalDomain')
-  puts defaults.to_h
-  puts defaults.to_yaml
+  require 'pp'
+  defaults = MacOS::Defaults.new(domain: '-globalDomain')
+  defaults.export
+  pp defaults.to_h
+  pp defaults.to_yaml
 end

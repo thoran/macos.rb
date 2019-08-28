@@ -1,14 +1,15 @@
 # OSX/IfConfig.rb
 # OSX::IfConfig
 
-# 20180209
-# 0.2.0
+# 20190828
+# 0.3.0
 
-# Changes since 0.1:
-# 1. + OSX namespace, under the assumption that the output of ifconfig on OSX is different from other operating systems.
+# Changes since 0.2:
+# 1. /OSX/MacOS/
+
 require 'Thoran/String/Captures/captures'
 
-module OSX
+module MacOS
   class IfConfig
 
     def new(output = nil)
@@ -50,7 +51,7 @@ end
 
 if __FILE__ == $0
   require 'pp'
-  ic = OSX::IfConfig.new
+  ic = MacOS::IfConfig.new
   pp ic.send(:parse)
   ic.interfaces
   ic.active_interfaces

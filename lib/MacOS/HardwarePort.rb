@@ -1,12 +1,15 @@
-# OSX/Hardware.rb
-# OSX::Hardware
+# MacOS/Hardware.rb
+# MacOS::Hardware
 
-# 20180209
-# 0.1.1
+# 20190828
+# 0.2.0
+
+# Changes since 0.1:
+# 1. /OSX/MacOS/
 
 require 'Thoran/String/Captures/captures'
 
-module OSX
+module MacOS
   class HardwarePort
 
     class << self
@@ -64,6 +67,6 @@ module OSX
 end
 
 if __FILE__ == $0
-  p hardware_ports = OSX::HardwarePort.all
-  p en4 = OSX::HardwarePort.find_by_device('en4')
+  p hardware_ports = MacOS::HardwarePort.all
+  p en4 = MacOS::HardwarePort.find_by_device('en4')
 end
