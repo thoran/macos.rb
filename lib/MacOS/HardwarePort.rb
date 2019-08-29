@@ -1,8 +1,8 @@
 # MacOS/HardwarePort.rb
 # MacOS::HardwarePort
 
-# 20190828
-# 0.3.0
+# 20190829
+# 0.3.1
 
 # Changes since 0.2:
 # 1. /Hardware/HardwarePort at the top of the file.
@@ -15,6 +15,11 @@
 # 8. + MacOS::HardwarePort.find_by_name
 # 9. + MacOS::HardwarePort.find_by_ethernet_address
 # 10. + MacOS::HardwarePort#mac_address
+# 0/1
+# 11. /MacOS::HardwarePort.find_by_device/MacOS::HardwarePort.find_by_interface/
+# 11. + alias_method :find_by_device, :find_by_interface
+# 12. + MacOS::HardwarePort#interface
+# 13. + alias_method :find_by_hardware_port, :find_by_name
 
 require 'Thoran/String/Captures/captures'
 
@@ -47,13 +52,15 @@ module MacOS
       alias_method :hardware_ports, :parse
       alias_method :ports, :parse
 
-      def find_by_device(device)
-        all.detect{|hardware_port| hardware_port.device == device}
+      def find_by_interface(interface)
+        all.detect{|hardware_port| hardware_port.interface == interface}
       end
+      alias_method :find_by_device, :find_by_interface
 
       def find_by_name(name)
         all.detect{|hardware_port| hardware_port.name == name}
       end
+      alias_method :find_by_hardware_port, :find_by_name
 
       def find_by_mac_address(mac_address)
         all.detect{|hardware_port| hardware_port.ethernet_address == mac_address}
@@ -86,6 +93,10 @@ module MacOS
       @ethernet_address
     end
 
+    def interface
+      @device
+    end
+
   end
 end
 
@@ -94,4 +105,5 @@ if __FILE__ == $0
   pp MacOS::HardwarePort.all
   p MacOS::HardwarePort.find_by_device('en4')
   p MacOS::HardwarePort.find_by_name('Wi-Fi')
+  p MacOS::HardwarePort.find_by_interface('en4')
 end
