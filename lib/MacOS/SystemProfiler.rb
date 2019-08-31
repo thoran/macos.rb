@@ -2,7 +2,7 @@
 # MacOS::SystemProfiler
 
 # 20190831
-# 0.2.0
+# 0.3.0
 
 # Description: This uses the built-in system_profiler command on MacOS to get access to the version numbers on any
 # version of MacOS which has a system_profiler command and which returns results in a known format.
@@ -16,11 +16,22 @@ module MacOS
 
     module_function
 
+    def system_profiler_output
+      `system_profiler SPSoftwareDataType`.force_encoding('UTF-8')
+    end
+
+    def system_version_data
+      system_profiler_output.grep(/System Version/).split(': ').last
+    end
+
+    def system_version_string
+      earlier_versions = system_version_data.split.fourth # OSX 10.4 to 10.9 at least
+      later_versions = system_version_data.split.second # MacOS 10.14 at least
+      earlier_versions || later_versions
+    end
+
     def system_version
-      common_output = `system_profiler SPSoftwareDataType`.force_encoding('UTF-8').grep(/System Version/).split(': ').last.split
-      earlier_versions = common_output.fourth # OSX 10.4 to 10.9 at least
-      later_versions = common_output.second # MacOS 10.14 at least
-      Version.new(earlier_versions || later_versions)
+      Version.new(system_version_string)
     end
 
     def major_system_version
@@ -35,5 +46,68 @@ module MacOS
       system_version.tiny
     end
 
+    def kernel_version_data
+      system_profiler_output.grep(/Kernel Version/).split(': ').last
+    end
+
+    def kernel_name
+      kernel_version_data.split.first
+    end
+
+    def kernel_version_string
+      kernel_version_data.split.last
+    end
+
+    def kernel_version
+      Version.new(kernel_version_string)
+    end
+
+    def boot_volume_data
+      system_profiler_output.grep(/Boot Volume/).split(': ').last
+    end
+    alias_method :boot_volume_string, :boot_volume_data
+
+    def boot_mode_data
+      system_profiler_output.grep(/Boot Mode/).split(': ').last
+    end
+    alias_method :boot_mode_string, :boot_volume_data
+    alias_method :boot_mode, :boot_volume_data
+
+    def computer_name_data
+      system_profiler_output.grep(/Computer Name/).split(': ').last
+    end
+    alias_method :computer_name_string, :computer_name_data
+    alias_method :computer_name, :computer_name_data
+
+    def username_data
+      system_profiler_output.grep(/User Name/).split(': ').last
+    end
+    alias_method :username_string, :username_data
+    alias_method :username, :username_data
+
+    def secure_virtual_memory_data
+      system_profiler_output.grep(/Secure Virtual Memory/).split(': ').last
+    end
+    alias_method :secure_virtual_memory_string, :secure_virtual_memory_data
+    alias_method :secure_virtual_memory, :secure_virtual_memory_data
+
+    def system_integrity_protection_data
+      system_profiler_output.grep(/System Integrity Protection/).split(': ').last
+    end
+    alias_method :system_integrity_protection_string, :system_integrity_protection_data
+    alias_method :system_integrity_protection, :system_integrity_protection_data
+
+    def time_since_boot_data
+      system_profiler_output.grep(/Time since boot/).split(': ').last
+    end
+    alias_method :time_since_boot_string, :time_since_boot_data
+    alias_method :time_since_boot, :time_since_boot_data
+
+  end
+end
+
+if __FILE__ == $0
+  MacOS::SystemProfiler.methods(false).sort.each do |methd|
+    p "#{methd}: #{MacOS::SystemProfiler.send(methd)}"
   end
 end
