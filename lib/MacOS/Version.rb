@@ -2,34 +2,26 @@
 # MacOS
 
 # 20190831
-# 0.0.0
+# 0.1.0
 
 require 'MacOS/SystemProfiler'
 
 module MacOS
 
-  VERSION ||= MacOS::SystemProfiler.system_version
-
   module_function
 
   def version
-    VERSION
+    MacOS::SystemProfiler.system_version
   end
 
-  def major_version
-    VERSION.split('.').first
-  end
-
-  def minor_version
-    VERSION.split('.').second
-  end
-
-  def tiny_version
-    VERSION.split('.').third
-  end
+  module VERSION; STRING = MacOS.version.to_s; end
 
 end
 
 if __FILE__ == $0
+  p MacOS::VERSION::STRING
   p MacOS.version
+  p MacOS.version.major
+  p MacOS.version.minor
+  p MacOS.version.tiny
 end
