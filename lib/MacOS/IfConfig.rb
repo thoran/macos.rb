@@ -1,18 +1,21 @@
-# OSX/IfConfig.rb
-# OSX::IfConfig
+# MacOS/IfConfig.rb
+# MacOS::IfConfig
 
-# 20190828
-# 0.3.0
+# 20191120, 21
+# 0.3.1
 
 # Changes since 0.2:
 # 1. /OSX/MacOS/
+# 0/1
+# 2. /new()/initialize()/ (Really!? I did that!?)
+# 3. Changed the self-run block to use p instead of pp.
 
 require 'Thoran/String/Captures/captures'
 
 module MacOS
   class IfConfig
 
-    def new(output = nil)
+    def initialize(output = nil)
       @output = output
     end
 
@@ -50,9 +53,8 @@ module MacOS
 end
 
 if __FILE__ == $0
-  require 'pp'
-  ic = MacOS::IfConfig.new
-  pp ic.send(:parse)
-  ic.interfaces
-  ic.active_interfaces
+  ifconfig = MacOS::IfConfig.new
+  p ifconfig.send(:parse)
+  p ifconfig.interfaces
+  p ifconfig.active_interfaces
 end
