@@ -2,7 +2,7 @@
 # MacOS::IfConfig
 
 # 20200428
-# 0.5.0
+# 0.5.1
 
 # Changes since 0.4:
 # 1. ~ MacOS::IfConfig.parse, so as it can handle VPN tunnels.
@@ -16,6 +16,8 @@
 # 9. ~ MacOS::IfConfig#active?, so as to make use of @status
 # 10. + MacOS::IfConfig#inactive?
 # 11. + MacOS::IfConfig#up?
+# 0/1
+# 12. ~  MacOS::IfConfig.parse, so as it correctly handles the last interface.
 
 require 'Thoran/String/Capture/capture'
 require 'Thoran/String/Captures/captures'
@@ -52,7 +54,7 @@ module MacOS
             @ifconfig.interface, _rest_of_line = line.captures(/^(.+?): (.+)$/)
           end
         end
-        @ifconfigs
+        @ifconfigs << @ifconfig
       end
       alias_method :all, :parse
       alias_method :interfaces, :parse
