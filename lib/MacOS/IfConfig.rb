@@ -2,19 +2,20 @@
 # MacOS::IfConfig
 
 # 20200428
-# 0.4.0
+# 0.5.0
 
-# Changes since 0.3:
-# 0: Aligned MacOS::IfConfig more closely with MacOS::HardwarePort
-# 1. ~ MacOS::IfConfig#parse --> MacOS::IfConfig.parse
-# 2. ~ MacOS::IfConfig#interfaces --> MacOS::IfConfig.interfaces && now returns the same as parse.
-# 2. ~ MacOS::IfConfig#output --> MacOS::IfConfig.output
-# 3. ~ MacOS::IfConfig#active_interfaces --> MacOS::IfConfig.active_interfaces
-# 4. + MacOS::IfConfig.interface_names (formerly MacOS::IfConfig#interfaces)
-# 5. + MacOS::IfConfig.active_interfaces_names
-# 6. + MacOS::IfConfig.mac_addresses
-# 7. + MacOS::IfConfig.ipv4_addresses
-# 8. + require 'Thoran/String/Capture/capture', so as to support the increased complexity in MacOS::IfConfig.parse.
+# Changes since 0.4:
+# 1. ~ MacOS::IfConfig.parse, so as it can handle VPN tunnels.
+# 2. ~ MacOS::IfConfig.parse, so that it now loads an instance with the value of the status field.
+# 3. + MacOS::IfConfig.inactive_interfaces
+# 4. + MacOS::IfConfig.inactive_interfaces_names
+# 5. + MacOS::IfConfig.up_interfaces
+# 6. + MacOS::IfConfig.up_interfaces_names
+# 7. /MacOS::IfConfig @active/MacOS::IfConfig @status/
+# 8. + MacOS::IfConfig#status
+# 9. ~ MacOS::IfConfig#active?, so as to make use of @status
+# 10. + MacOS::IfConfig#inactive?
+# 11. + MacOS::IfConfig#up?
 
 require 'Thoran/String/Capture/capture'
 require 'Thoran/String/Captures/captures'
@@ -36,11 +37,14 @@ module MacOS
             when /inet /
               if line.match(/broadcast/)
                 @ifconfig.ipv4_address, @ifconfig.netmask, @ifconfig.broadcast_address = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) broadcast (.+)$/)
+              elsif line.match(/-->/)
+                ipv4_addresses, @ifconfig.netmask = line.captures(/ *inet (.+) netmask (.+) $/)
+                @ifconfig.ipv4_address = ipv4_addresses.split(' --> ').first
               else
                 @ifconfig.ipv4_address, @ifconfig.netmask = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) $/)
               end
             when /status\:/
-              @ifconfig.active = line.capture(/ *status: (.+)$/) == 'active'
+              @ifconfig.status = line.capture(/ *status: (.+)$/)
             end
           else
             @ifconfigs << @ifconfig if @ifconfig
@@ -66,6 +70,24 @@ module MacOS
         all.select(&:active?).collect(&:interface_name)
       end
 
+      def inactive_interfaces
+        all.select(&:inactive?)
+      end
+      alias_method :inactive, :inactive_interfaces
+
+      def inactive_interfaces_names
+        all.select(&:inactive?).collect(&:interface_name)
+      end
+
+      def up_interfaces
+        all.select(&:up?)
+      end
+      alias_method :up, :up_interfaces
+
+      def up_interfaces_names
+        all.select(&:up?).collect(&:interface_name)
+      end
+
       def mac_addresses
         all.collect(&:mac_address).compact
       end
@@ -86,13 +108,13 @@ module MacOS
     attr_accessor :interface
     attr_accessor :mac_address
     attr_accessor :ipv4_address, :netmask, :broadcast_address
-    attr_accessor :active
+    attr_accessor :status
 
-    def initialize(interface: nil, mac_address: nil, ipv4_address: nil, netmask: nil, broadcast_address:nil, active: nil)
+    def initialize(interface: nil, mac_address: nil, ipv4_address: nil, netmask: nil, broadcast_address:nil, status: nil)
       @interface = interface
       @mac_address = mac_address
       @ipv4_address, @netmask, @broadcast_address = ipv4_address, netmask, broadcast_address
-      @active = active
+      @status = status
     end
 
     def interface_name
@@ -105,17 +127,30 @@ module MacOS
     end
 
     def active?
-      @active
+      @status == 'active'
+    end
+
+    def inactive?
+      @status == 'inactive'
+    end
+
+    def up?
+      active? || @ipv4_address
     end
 
   end
 end
 
 if __FILE__ == $0
-  p MacOS::IfConfig.interfaces
+  require 'pp'
+  pp MacOS::IfConfig.interfaces
   p MacOS::IfConfig.interface_names
   p MacOS::IfConfig.active_interfaces
   p MacOS::IfConfig.active_interfaces_names
+  p MacOS::IfConfig.inactive_interfaces
+  p MacOS::IfConfig.inactive_interfaces_names
+  p MacOS::IfConfig.up_interfaces
+  p MacOS::IfConfig.up_interfaces_names
   p MacOS::IfConfig.mac_addresses
   p MacOS::IfConfig.ipv4_addresses
 end
