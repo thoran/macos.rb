@@ -1,23 +1,13 @@
 # MacOS/IfConfig.rb
 # MacOS::IfConfig
 
-# 20200428
-# 0.5.1
+# 20200429
+# 0.6.0
 
-# Changes since 0.4:
-# 1. ~ MacOS::IfConfig.parse, so as it can handle VPN tunnels.
-# 2. ~ MacOS::IfConfig.parse, so that it now loads an instance with the value of the status field.
-# 3. + MacOS::IfConfig.inactive_interfaces
-# 4. + MacOS::IfConfig.inactive_interfaces_names
-# 5. + MacOS::IfConfig.up_interfaces
-# 6. + MacOS::IfConfig.up_interfaces_names
-# 7. /MacOS::IfConfig @active/MacOS::IfConfig @status/
-# 8. + MacOS::IfConfig#status
-# 9. ~ MacOS::IfConfig#active?, so as to make use of @status
-# 10. + MacOS::IfConfig#inactive?
-# 11. + MacOS::IfConfig#up?
-# 0/1
-# 12. ~  MacOS::IfConfig.parse, so as it correctly handles the last interface.
+# Changes since 0.5:
+# 1. + MacOS::Ifconfig.find_by_interface
+# 2. + MacOS::Ifconfig.find_by_mac_address
+# 3. + MacOS::Ifconfig.find_by_ipv4_address
 
 require 'Thoran/String/Capture/capture'
 require 'Thoran/String/Captures/captures'
@@ -99,6 +89,18 @@ module MacOS
         all.collect(&:ipv4_address).compact
       end
 
+      def find_by_interface(interface)
+        all.find{|ifconfig| ifconfig.interface == interface}
+      end
+
+      def find_by_mac_address(mac_address)
+        all.find{|ifconfig| ifconfig.mac_address == mac_address}
+      end
+
+      def find_by_ipv4_address(ipv4_address)
+        all.find{|ifconfig| ifconfig.ipv4_address == ipv4_address}
+      end
+
       private
 
       def output
@@ -155,4 +157,5 @@ if __FILE__ == $0
   p MacOS::IfConfig.up_interfaces_names
   p MacOS::IfConfig.mac_addresses
   p MacOS::IfConfig.ipv4_addresses
+  p MacOS::IfConfig.find_by_interface('en0')
 end
