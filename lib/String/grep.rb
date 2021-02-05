@@ -1,26 +1,17 @@
+# String/grep.rb
 # String#grep
 
-# 20120330
-# 0.1.1
+# 20200616
+# 0.2.0
 
-# Changes: 
-# 1. + require 'String/each', since Ruby 1.9 no longer mixes in Enumerable.  
-# 2. + include Enumerable, since Ruby 1.9 no longer mixes in Enumerable.  
-# 0/1
-# 3. ~ grep(), so as it joins the lines with linefeeds.  
-
-# Note: 
-# 1. It still doesn't do the replace bit yet...  
-# 2. There's probably a faster way to do this but for small strings it is plenty good.  
-
-require 'String/each'
+# Changes since 0.1:
+# 0/1: No longer mixing in Enumerable as it was causing an infinite loop when used with net/http/header.rb:94.
+# 0. ~ String#grep: Now splitting the string and relying upon Enumerable being on Array.
 
 class String
-  
-  include Enumerable
-  
+
   def grep(pattern)
-    self.select{|line| line =~ pattern}.join("\n")
+    self.split("\n").select{|line| line =~ pattern}.join("\n")
   end
-  
+
 end
