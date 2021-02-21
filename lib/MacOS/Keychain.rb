@@ -1,17 +1,18 @@
 #!/usr/bin/env ruby
 # MacOS::Keychain
 
-# 20210212
-# 0.1.0
+# 20210220
+# 0.1.1
 
 require 'open3'
+require 'shellwords'
 
 module MacOS
   class Keychain
     class << self
- 
+
       def find_generic_password_command(key)
-        "security find-generic-password -ga #{key}"
+        "security find-generic-password -ga #{Shellwords.escape(key)}"
       end
 
       def find_generic_password(key)
