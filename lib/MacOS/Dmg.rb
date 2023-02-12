@@ -1,13 +1,13 @@
 # MacOS/Dmg.rb
 # MacOS::Dmg
 
-# 20190828
-# 0.6.0
+# 20230212
+# 0.7.0
 
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.
 
 # Changes since 0.5:
-# 1. /OSX/MacOS/
+# 1. ~ self.unmount(): Rather than assume the path or the name of the package, specify the mount point point to unmount.
 
 require 'Array/all_but_last'
 require 'Module/alias_methods'
@@ -35,9 +35,9 @@ module MacOS
         Dir.chdir(starting_working_directory)
       end
 
-      def unmount(package)        
-        puts "hdiutil detach -Force /Volumes/#{Shellwords.escape(package)}" if verbose
-        system "hdiutil detach -Force /Volumes/#{Shellwords.escape(package)}"
+      def unmount(mount_point)
+        puts "hdiutil detach -Force #{Shellwords.escape(mount_point)}" if verbose
+        system "hdiutil detach -Force #{Shellwords.escape(mount_point)}"
       end
       alias_method :detach, :unmount
 

@@ -1,16 +1,13 @@
 # Version.rb
 # Version
 
-# 20180209
-# 0.13.1
+# 20220213
+# 0.14.0
 
 # Description: This class is able to compare strings containing version numbers.
 
-# Changes since 0.12:
-# 1. Version.each now returns Version instances.
-# 2. Version.sorted now returns a collection with either strings or Version instances, depending on what was supplied.
-# 0/1
-# 3. - require 'String/capture' && + require 'Thoran/String/Capture/capture'
+# Changes since 0.13:
+# 1. Removed all reference to version_codes.
 
 lib_dir = File.dirname(File.expand_path(__FILE__))
 $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
@@ -193,25 +190,8 @@ class Version
       to_a.compact
     end
 
-    def from_version_code(version_code)
-      version_string = version_code.scan(/../).collect{|n| n.to_i}.join('.')
-      Version.new(version_string)
-    end
-
-    def to_version_code(version)
-      version_string = to_version_string(version)
-      to_a(version_string, false).collect{|part| part.rjust(2, '0')}.join
-    end
-    alias_methods :version_code, :to_version_code
-
-    # Should I handle version codes here?  If I don't handle version codes for any argument which makes reference to a version, then I could simply do a version.to_s in place of using to_version_string().
     def to_version_string(version)
-      version = version.to_s
-      if version.match(/\./)
-        version
-      else
-        from_version_code(version).to_s
-      end
+      version.to_s
     end
 
     # boolean methods
@@ -333,10 +313,6 @@ class Version
 
   def to_s
     version_string
-  end
-
-  def version_code
-    self.class.version_code(version_string)
   end
 
   def least_significant_version_part_name
