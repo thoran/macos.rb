@@ -1,8 +1,8 @@
 # MacOS/Defaults/ComAppleDock.rb
 # MacOS::Defaults::ComAppleDock
 
-# 20250210
-# 0.1.0
+# 20250211
+# 0.2.0
 
 module MacOS
   module Defaults
@@ -34,27 +34,51 @@ module MacOS
           "defaults write com.apple.dock persistent-apps -array-add '#{urlified_item_string}'"
         end
 
-        def write_item(item)
+        def add_item(item)
           system(defaults_write_command(item_plist(urlified_item_string(item))))
         end
 
-        def write_items(dock_config)
-          dock_config.each do |item|
-            write_item(item)
+        def load_items(dock_config_items)
+          dock_config_items.each do |item|
+            add_item(item)
           end
         end
 
         def delete_all_items
-          delete('persistent-apps')
-          delete('persistent-others')
-          delete('recent-apps')
+          delete_items('persistent-apps')
+          delete_items('persistent-others')
+          delete_items('recent-apps')
         end
 
-        def delete(scope)
+        def delete_items(scope)
           system("defaults delete com.apple.dock #{scope}")
         end
-      end
 
+        def attribute_command_string(attr, value)
+          "defaults write com.apple.dock #{attr} #{value}"
+        end
+
+        def load_attribute(attr, value)
+          system(attribute_command_string(attr, value))
+        end
+
+        def load_attributes(dock_config)
+          dock_config.each do |attr, value|
+            next if attr == 'items'
+            load_attribute(attr, value)
+          end
+        end
+
+        def load(dock_config)
+          dock_config.each do |attr, value|
+            if attr == 'items'
+              load_items(value)
+            else
+              load_attribute(attr, value)
+            end
+          end
+        end
+      end
     end
   end
 end
