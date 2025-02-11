@@ -2,9 +2,7 @@
 # MacOS::Defaults::ComAppleDock
 
 # 20250211
-# 0.3.0
-
-require '_meta/to_boolean'
+# 0.4.0
 
 module MacOS
   module Defaults
@@ -17,6 +15,9 @@ module MacOS
         minimize-to-application
         single-app
         trash-full
+      }
+      INTEGER_ATTRIBUTES = %w{
+        tilesize
       }
 
       class << self
@@ -73,30 +74,29 @@ module MacOS
           system("defaults delete com.apple.dock #{scope}")
         end
 
-        def general_attribute_write_command_string(attr, value)
+        def attribute_write_command(attr, value)
+          value = (
+            if BOOLEAN_ATTRIBUTES.include?(attr) # Without adding -bool it doesn't work.
+              "-bool #{value}"
+            elsif INTEGER_ATTRIBUTES.include?(attr) # Adding -int isn't strictly necessary for it to work, but is correct syntax.
+              "-int #{value}"
+            else
+              value
+            end
+          )
           "defaults write com.apple.dock #{attr} #{value}"
         end
 
-        def boolean_attribute_write_command_string(attr, value)
-          "defaults write com.apple.dock #{attr} -bool #{value.to_boolean}"
-        end
-
-        def load_general_attribute(attr, value)
-          system(general_attribute_write_command_string(attr, value))
-        end
-
-        def load_boolean_attribute(attr, value)
-          system(boolean_attribute_write_command_string(attr, value))
+        def load_attribute(attr, value)
+          system(attribute_write_command(attr, value))
         end
 
         def load(dock_config)
           dock_config.each do |attr, value|
             if attr == 'persistent-apps'
               load_persistent_apps(value)
-            elsif BOOLEAN_ATTRIBUTES.include?(attr)
-              load_boolean_attribute(attr, value)
             else
-              load_general_attribute(attr, value)
+              load_attribute(attr, value)
             end
           end
         end
