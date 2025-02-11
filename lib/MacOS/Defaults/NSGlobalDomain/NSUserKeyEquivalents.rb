@@ -2,7 +2,13 @@
 # MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents
 
 # 20250210
-# 0.0.0
+# 0.1.0
+
+# Changes:
+# -/0 (More modifier keys and matching letters.)
+# 1. ~ KEY_MAP: + ctrl
+# 2. ~ KEY_MAP: + shift
+# 3. ~ key_code(): Check if a key is alphabetic and use that.
 
 module MacOS
   module Defaults
@@ -10,7 +16,9 @@ module MacOS
       class NSUserKeyEquivalents
         KEY_MAP = {
           [:cmd, :command, :command_key] => '@',
-          [:alt, :option, :option_key] => '~',
+          [:alt, :alt_key, :option, :option_key] => '~',
+          [:ctrl, :control, :control_key] => '^',
+          [:shift, :shift_key] => '$',
           [:left, :left_key, :left_arrow, :left_arrow_key] => '\UF702', # Also '\U2190'?
           [:right, :right_key, :right_arrow, :right_arrow_key] => '\UF703', # Also '\U2192'?
         }
@@ -19,7 +27,9 @@ module MacOS
           def key_code(*keys)
             return_value = []
             keys.flatten.each do |key|
-              if matching_pair = KEY_MAP.find{|key_mapping| key_mapping.first.map(&:to_s).map(&:downcase).include?(key.downcase)}
+              if ('a'..'z').include?(key.downcase)
+                return_value << key.downcase
+              elsif matching_pair = KEY_MAP.find{|key_mapping| key_mapping.first.map(&:to_s).map(&:downcase).include?(key.downcase)}
                 return_value << matching_pair.last
               else
                 raise "No key #{key} found."
@@ -72,5 +82,7 @@ if __FILE__ == $0
   print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{CMD ALT LEFT}, "Previous Tab") == true ? '.' : 'x')
   print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{cmd alt left}, ["Previous Tab", "Select Previous Tab", "Show Previous Tab"]) == true ? '.' : 'x')
   print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{CMD ALT LEFT}, ["Previous Tab", "Select Previous Tab", "Show Previous Tab"]) == true ? '.' : 'x')
+  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{CMD D}, "Find Previous") == true ? '.' : 'x')
+
   puts
 end
