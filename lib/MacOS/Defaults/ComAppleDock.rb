@@ -2,14 +2,14 @@
 # MacOS::Defaults::ComAppleDock
 
 # 20250210
-# 0.0.0
+# 0.1.0
 
 module MacOS
   module Defaults
     module ComAppleDock
 
       class << self
-        def dock_item(urlified_dock_item_string)
+        def item_plist(urlified_item_string)
           <<~DOCK_ITEM
             <dict>
               <key>tile-data</key>
@@ -17,7 +17,7 @@ module MacOS
                 <key>file-data</key>
                 <dict>
                   <key>_CFURLString</key>
-                  <string>#{urlified_dock_item_string}</string>
+                  <string>#{urlified_item_string}</string>
                   <key>_CFURLStringType</key>
                   <integer>15</integer>
                 </dict>
@@ -26,22 +26,32 @@ module MacOS
           DOCK_ITEM
         end
 
-        def urlified_dock_item_string(item)
+        def urlified_item_string(item)
           "file://#{File.expand_path(item)}"
         end
 
-        def defaults_write_command(urlified_dock_item_string)
-          "defaults write com.apple.dock persistent-apps -array-add '#{urlified_dock_item_string}'"
+        def defaults_write_command(urlified_item_string)
+          "defaults write com.apple.dock persistent-apps -array-add '#{urlified_item_string}'"
         end
 
-        def write_dock_item(item)
-          system(defaults_write_command(dock_item(urlified_dock_item_string(item))))
+        def write_item(item)
+          system(defaults_write_command(item_plist(urlified_item_string(item))))
         end
 
-        def write_dock_items(dock_config)
+        def write_items(dock_config)
           dock_config.each do |item|
-            write_dock_item(item)
+            write_item(item)
           end
+        end
+
+        def delete_all_items
+          delete('persistent-apps')
+          delete('persistent-others')
+          delete('recent-apps')
+        end
+
+        def delete(scope)
+          system("defaults delete com.apple.dock #{scope}")
         end
       end
 
