@@ -2,79 +2,101 @@
 # MacOS::Defaults::ComAppleDock
 
 # 20250211
-# 0.2.0
+# 0.3.0
+
+require '_meta/to_boolean'
 
 module MacOS
   module Defaults
     module ComAppleDock
+      BOOLEAN_ATTRIBUTES = %w{
+        autohide
+        expose-group-apps
+        launchanim
+        magnification
+        minimize-to-application
+        single-app
+        trash-full
+      }
 
       class << self
-        def item_plist(urlified_item_string)
-          <<~DOCK_ITEM
+        def app_plist_data(urlified_app_string)
+          <<~APP_PLIST
             <dict>
               <key>tile-data</key>
               <dict>
                 <key>file-data</key>
                 <dict>
                   <key>_CFURLString</key>
-                  <string>#{urlified_item_string}</string>
+                  <string>#{urlified_app_string}</string>
                   <key>_CFURLStringType</key>
                   <integer>15</integer>
                 </dict>
               </dict>
             </dict>
-          DOCK_ITEM
+          APP_PLIST
         end
 
-        def urlified_item_string(item)
+        def urlified_app_string(item)
           "file://#{File.expand_path(item)}"
         end
 
-        def defaults_write_command(urlified_item_string)
-          "defaults write com.apple.dock persistent-apps -array-add '#{urlified_item_string}'"
+        def persistent_app_write_command(app_plist_data)
+          "defaults write com.apple.dock persistent-apps -array-add '#{app_plist_data}'"
         end
 
-        def add_item(item)
-          system(defaults_write_command(item_plist(urlified_item_string(item))))
+        def add_persistent_app(persistent_app_path)
+          system(
+            persistent_app_write_command(
+              app_plist_data(
+                urlified_app_string(
+                  persistent_app_path
+                )
+              )
+            )
+          )
         end
 
-        def load_items(dock_config_items)
-          dock_config_items.each do |item|
-            add_item(item)
+        def load_persistent_apps(persistent_app_paths)
+          persistent_app_paths.each do |persistent_app_path|
+            add_persistent_app(persistent_app_path)
           end
         end
 
         def delete_all_items
-          delete_items('persistent-apps')
-          delete_items('persistent-others')
-          delete_items('recent-apps')
+          delete_item('persistent-apps')
+          delete_item('persistent-others')
+          delete_item('recent-apps')
         end
 
-        def delete_items(scope)
+        def delete_item(scope)
           system("defaults delete com.apple.dock #{scope}")
         end
 
-        def attribute_command_string(attr, value)
+        def general_attribute_write_command_string(attr, value)
           "defaults write com.apple.dock #{attr} #{value}"
         end
 
-        def load_attribute(attr, value)
-          system(attribute_command_string(attr, value))
+        def boolean_attribute_write_command_string(attr, value)
+          "defaults write com.apple.dock #{attr} -bool #{value.to_boolean}"
         end
 
-        def load_attributes(dock_config)
-          dock_config.each do |attr, value|
-            next if attr == 'items'
-            load_attribute(attr, value)
-          end
+        def load_general_attribute(attr, value)
+          system(general_attribute_write_command_string(attr, value))
+        end
+
+        def load_boolean_attribute(attr, value)
+          system(boolean_attribute_write_command_string(attr, value))
         end
 
         def load(dock_config)
           dock_config.each do |attr, value|
-            if attr == 'items'
-              load_items(value)
+            if attr == 'persistent-apps'
+              load_persistent_apps(value)
+            elsif BOOLEAN_ATTRIBUTES.include?(attr)
+              load_boolean_attribute(attr, value)
             else
-              load_attribute(attr, value)
+              load_general_attribute(attr, value)
             end
           end
         end
