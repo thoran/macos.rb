@@ -1,24 +1,37 @@
 # MacOS/Defaults/ComAppleDock.rb
 # MacOS::Defaults::ComAppleDock
 
-# 20250211
-# 0.4.0
+# 20250212
+# 0.5.0
+
+require 'plist'
 
 module MacOS
   module Defaults
     module ComAppleDock
+      ARRAY_ATTRIBUTES = %w{
+        persistent-apps
+        persistent-others
+        recent-apps
+      }
       BOOLEAN_ATTRIBUTES = %w{
         autohide
         expose-group-apps
         launchanim
         magnification
         minimize-to-application
+        show-process-indicators
         single-app
         trash-full
       }
       INTEGER_ATTRIBUTES = %w{
         tilesize
       }
+      STRING_ATTRIBUTES = %w{
+        mineffect
+        orientation
+      }
+      ALL_ATTRIBUTES = (ARRAY_ATTRIBUTES + BOOLEAN_ATTRIBUTES + INTEGER_ATTRIBUTES + STRING_ATTRIBUTES).sort
 
       class << self
         def app_plist_data(urlified_app_string)
@@ -100,6 +113,31 @@ module MacOS
             end
           end
         end
+
+        def peristent_app_paths(peristent_apps_plist)
+          peristent_apps_plist.map do |persistent_app|
+            file_url = persistent_app['tile-data']['file-data']['_CFURLString']
+            file_url.sub(/file:\/\//, '').gsub(/%20/, ' ').sub(/\/Users\/.+?(\/.+)\//, '~\1')
+          end
+        end
+
+        def read(*attributes)
+          plist = Plist.parse_xml(`defaults export com.apple.dock -`)
+          attribute_list = (attributes.empty? ? ALL_ATTRIBUTES : attributes)
+          attribute_list.map do |attribute|
+            next if %w{persistent-others recent-apps}.include?(attribute)
+            if attribute == 'persistent-apps'
+              {attribute => peristent_app_paths(plist['persistent-apps'])}
+            else
+              {attribute => plist[attribute]}
+            end
+          end.compact
+        end
+
+        def to_yaml
+          YAML.dump(read)
+        end
+        alias_method :dump, :to_yaml
       end
     end
   end
