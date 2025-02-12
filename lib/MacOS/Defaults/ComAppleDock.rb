@@ -2,7 +2,7 @@
 # MacOS::Defaults::ComAppleDock
 
 # 20250212
-# 0.5.1
+# 0.5.2
 
 require 'plist'
 
@@ -129,19 +129,20 @@ module MacOS
         end
 
         def read(*attributes)
+          return_value = {}
           plist = Plist.parse_xml(`defaults export com.apple.dock -`)
           attribute_list = (attributes.empty? ? ALL_ATTRIBUTES : attributes)
-          attribute_list.map do |attribute|
+          attribute_list.each do |attribute|
             next if %w{persistent-others recent-apps}.include?(attribute)
             if attribute == 'persistent-apps'
-              # p plist
-              {attribute => peristent_app_paths(plist)}
+              return_value[attribute] = peristent_app_paths(plist)
             elsif BOOLEAN_ATTRIBUTES.include?(attribute)
-              {attribute => boolean_to_yes_no(plist[attribute])}
+              return_value[attribute] = boolean_to_yes_no(plist[attribute])
             else
-              {attribute => plist[attribute]}
+              return_value[attribute] = plist[attribute]
             end
-          end.compact
+          end
+          return_value
         end
 
         def to_yaml
