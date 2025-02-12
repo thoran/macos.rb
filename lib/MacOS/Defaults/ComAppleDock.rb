@@ -2,7 +2,7 @@
 # MacOS::Defaults::ComAppleDock
 
 # 20250212
-# 0.5.0
+# 0.5.1
 
 require 'plist'
 
@@ -114,10 +114,17 @@ module MacOS
           end
         end
 
-        def peristent_app_paths(peristent_apps_plist)
-          peristent_apps_plist.map do |persistent_app|
+        def peristent_app_paths(plist)
+          plist['persistent-apps'].map do |persistent_app|
             file_url = persistent_app['tile-data']['file-data']['_CFURLString']
             file_url.sub(/file:\/\//, '').gsub(/%20/, ' ').sub(/\/Users\/.+?(\/.+)\//, '~\1')
+          end
+        end
+
+        def boolean_to_yes_no(boolean_string)
+          case boolean_string
+          when true; 'yes'
+          when false; 'no'
           end
         end
 
@@ -127,7 +134,10 @@ module MacOS
           attribute_list.map do |attribute|
             next if %w{persistent-others recent-apps}.include?(attribute)
             if attribute == 'persistent-apps'
-              {attribute => peristent_app_paths(plist['persistent-apps'])}
+              # p plist
+              {attribute => peristent_app_paths(plist)}
+            elsif BOOLEAN_ATTRIBUTES.include?(attribute)
+              {attribute => boolean_to_yes_no(plist[attribute])}
             else
               {attribute => plist[attribute]}
             end
@@ -135,7 +145,7 @@ module MacOS
         end
 
         def to_yaml
-          YAML.dump(read)
+          YAML.dump(read).gsub(/['"]/, '')
         end
         alias_method :dump, :to_yaml
       end
