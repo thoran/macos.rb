@@ -1,14 +1,15 @@
 # MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents.rb
 # MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents
 
-# 20250210
-# 0.1.0
+# 20250211
+# 0.2.0
 
 # Changes:
-# -/0 (More modifier keys and matching letters.)
-# 1. ~ KEY_MAP: + ctrl
-# 2. ~ KEY_MAP: + shift
-# 3. ~ key_code(): Check if a key is alphabetic and use that.
+# -/0: Parse existing assignments and dump yaml.
+# 1. + read_keys()
+# 2. + to_yaml()
+
+require 'String/grep'
 
 module MacOS
   module Defaults
@@ -27,9 +28,9 @@ module MacOS
           def key_code(*keys)
             return_value = []
             keys.flatten.each do |key|
-              if ('a'..'z').include?(key.downcase)
+              if ('a'..'z').include?(key.to_s.downcase)
                 return_value << key.downcase
-              elsif matching_pair = KEY_MAP.find{|key_mapping| key_mapping.first.map(&:to_s).map(&:downcase).include?(key.downcase)}
+              elsif matching_pair = KEY_MAP.find{|key_mapping| key_mapping.first.map(&:to_s).map(&:downcase).include?(key.to_s.downcase)}
                 return_value << matching_pair.last
               else
                 raise "No key #{key} found."
@@ -62,6 +63,52 @@ module MacOS
           def assign_keys(key_or_keys, menu_item_or_items)
             assign_key_code(key_code(key_or_keys), menu_item_or_items)
           end
+
+          def load(shortcuts)
+            shortcuts.map do |shortcut|
+              assign_keys(shortcut[:keys], shortcut[:menu_items])
+            end
+          end
+
+          def parse_key_code(key_code)
+            key_code.split('\U')
+          end
+
+          def read_keys
+            return_value = []
+            plist_dict = `defaults read .GlobalPreferences NSUserKeyEquivalents -`
+            menu_item_to_keys_map = plist_dict.grep(/=/).split("\n").map{|e| e.split('=')}.map{|k,v| [k.strip, v.strip]}.map{|k,v| [k.tr('"',''), v.tr('"','')]}
+            menu_item_to_keys_map.each do |shortcut|
+              menu_item, key_code = shortcut.first, shortcut.last
+              md = key_code.match(/([\@~\^\$]+)(.+);/)
+              modifier_key_codes, key_code = md[1], md[2]
+              modifier_key_names = modifier_key_codes.split('').map{|e| KEY_MAP.find{|km| km.last == e}.first.first}
+              key_code = key_code.sub(/\\/, '')
+              key_name = (
+                if ('a'..'z').include?(key_code)
+                  key_code
+                else
+                  KEY_MAP.find do |km|
+                    km.last == key_code.upcase
+                  end.first.first
+                end
+              )
+              keys = [modifier_key_names, key_name].flatten
+              found_shortcut = return_value.find{|e| Set.new(e[:keys]) == Set.new(keys)}
+              if found_shortcut = return_value.find{|e| Set.new(e[:keys]) == Set.new(keys)}
+                index = return_value.index(found_shortcut)
+                return_value[index][:menu_items] << menu_item
+              else
+                return_value << {keys: keys, menu_items: [menu_item]}
+              end
+            end
+            return_value.reverse
+          end
+
+          def to_yaml
+            YAML.dump(read_keys)
+          end
+          alias_method :dump, :to_yaml
         end
       end
     end
