@@ -1,13 +1,15 @@
 # MacOS/IfConfig.rb
 # MacOS::IfConfig
 
-# 20200429
-# 0.6.0
+# 20250419
+# 0.6.1
 
 # Changes since 0.5:
 # 1. + MacOS::Ifconfig.find_by_interface
 # 2. + MacOS::Ifconfig.find_by_mac_address
 # 3. + MacOS::Ifconfig.find_by_ipv4_address
+# 0/1:
+# 4. ~ MacOS::Ifconfig.parse: Rework the regex for the '-->' case.
 
 require 'Thoran/String/Capture/capture'
 require 'Thoran/String/Captures/captures'
@@ -30,8 +32,8 @@ module MacOS
               if line.match(/broadcast/)
                 @ifconfig.ipv4_address, @ifconfig.netmask, @ifconfig.broadcast_address = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) broadcast (.+)$/)
               elsif line.match(/-->/)
-                ipv4_addresses, @ifconfig.netmask = line.captures(/ *inet (.+) netmask (.+) $/)
-                @ifconfig.ipv4_address = ipv4_addresses.split(' --> ').first
+                ipv4_address_from, ipv4_address_to, @ifconfig.netmask = line.captures(/inet (.+) --> (.+) netmask (.+)$/)
+                @ifconfig.ipv4_address = ipv4_address_from
               else
                 @ifconfig.ipv4_address, @ifconfig.netmask = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) $/)
               end
@@ -101,7 +103,7 @@ module MacOS
         all.find{|ifconfig| ifconfig.ipv4_address == ipv4_address}
       end
 
-      private
+      # private
 
       def output
         `ifconfig -a`
