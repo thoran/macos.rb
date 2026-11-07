@@ -1,0 +1,8 @@
+Albert              en_US    # Hello! My name is Albert.
+Bad News            en_US    # Hello! My name is Bad News.
+Eddy (English (UK)) en_GB    # Hello! My name is Eddy.
+Eddy (English (US)) en_US    # Hello! My name is Eddy.
+Karen               en_AU    # Hi my name is Karen
+Samantha            en_US    # Hello! My name is Samantha.
+Thomas              fr_FR    # Bonjour, je m’appelle Thomas.
+Zarvox              en_US    # Hello! My name is Zarvox.

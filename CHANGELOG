@@ -2,6 +2,18 @@
 
 ## 20261107
 
+0.50.0: The first release as a gem: + gemspec, tests in place of each library's self-run section, README, TODO and ROADMAP.md.
+
+1. + macos.rb.gemspec: macos.rb, for Ruby 2.7 on, depending on CFPropertyList and plist.
+2. + Gemfile, Rakefile.
+3. + LICENSE: MIT, 2013 to 2026.
+4. + README.md, TODO, ROADMAP.md.
+5. + test/helper.rb, test/MacOS_test.rb, test/VERSION_test.rb, test/gemspec_test.rb, test/commands_test.rb for the command each library sends, and a test for each library under test/MacOS.
+6. + test/fixtures: the output each library reads, in the form airport, defaults, df, diskutil, dscl, ifconfig, networksetup, say and system_profiler give it, with every MAC address, IP address and name made anonymous.
+7. - the self-run section of lib/MacOS/Apple80211.rb, Applications.rb, Defaults.rb, Defaults/NSGlobalDomain/NSUserKeyEquivalents.rb, Dmg.rb, HardwarePort.rb, IfConfig.rb, Keychain.rb, SystemProfiler.rb, USBFlashDrive.rb, Users.rb and Voice.rb, the tests taking their place.
+8. ~ lib/MacOS/Apple80211.rb, Keychain.rb, USBFlashDrive.rb: The header's first line names the file, in place of #!/usr/bin/env ruby, which only the self-run section needed.
+9. ~ MacOS::VERSION: /0.49.11/0.50.0/
+
 0.49.11: ~ MacOS::Apple80211: Where airport -I gives nothing, as from macOS 14.4 on, the attributes come from system_profiler SPAirPortDataType.
 
 1. ~ MacOS::Apple80211.attributes: airport -I's, or where it gives none, the current network's from system_profiler SPAirPortDataType, with its Channel and Security as channel and link auth too, and its name as SSID where macOS doesn't redact it.

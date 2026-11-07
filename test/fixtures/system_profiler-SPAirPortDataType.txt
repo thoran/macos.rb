@@ -1,0 +1,44 @@
+Wi-Fi:
+
+      Software Versions:
+          CoreWLAN: 16.0 (1657)
+          CoreWLANKit: 16.0 (1657)
+          Menu Extra: 17.0 (1728)
+          System Information: 15.0 (1502)
+          IO80211 Family: 12.0 (1200.13.1)
+          Diagnostics: 11.0 (1163)
+          AirPort Utility: 6.3.9 (639.23)
+      Interfaces:
+        en0:
+          Card Type: Wi-Fi  (0x14E4, 0x4388)
+          MAC Address: 00:00:5e:00:53:02
+          Locale: FCC
+          Country Code: US
+          Supported PHY Modes: 802.11 a/b/g/n/ac/ax
+          Wake On Wireless: Supported
+          AirDrop: Supported
+          Auto Unlock: Supported
+          Status: Connected
+          Current Network Information:
+            <redacted>:
+              PHY Mode: 802.11ax
+              Channel: 36 (5GHz, 80MHz)
+              Country Code: US
+              Network Type: Infrastructure
+              Security: WPA2 Personal
+              Signal / Noise: -52 dBm / -94 dBm
+              Transmit Rate: 573
+              MCS Index: 9
+          Other Local Wi-Fi Networks:
+            <redacted>:
+              PHY Mode: 802.11ac
+              Channel: 149 (5GHz, 80MHz)
+              Network Type: Infrastructure
+              Security: WPA2 Personal
+              Signal / Noise: -70 dBm / -94 dBm
+        awdl0:
+          MAC Address: 00:00:5e:00:53:03
+          Supported Channels: 6 (2GHz), 44 (5GHz), 149 (5GHz)
+          Status: Connected
+          Current Network Information:
+              Network Type: Infrastructure

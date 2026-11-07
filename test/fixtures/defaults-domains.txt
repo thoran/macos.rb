@@ -1,0 +1,1 @@
+com.apple.dock, com.apple.finder, com.apple.Safari

@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# MacOS/USBFlashDrive.rb
 # MacOS::USBFlashDrive
 
 require 'open3'
@@ -23,10 +23,4 @@ module MacOS
 
     end # class << self
   end
-end
-
-if __FILE__ == $0
-  puts MacOS::USBFlashDrive.system_profiler_usb_data_type_command
-  puts MacOS::USBFlashDrive.raw_system_profiler_output
-  puts MacOS::USBFlashDrive.all_mount_points
 end

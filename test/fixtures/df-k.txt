@@ -1,0 +1,6 @@
+Filesystem     1024-blocks      Used Available Capacity iused      ifree %iused  Mounted on
+/dev/disk3s1s1   971350180  11000992 512000000     3%  425829 4291815364    0%   /
+devfs                  211       211         0   100%     730          0  100%   /dev
+/dev/disk3s5     971350180 400000000 512000000    44% 1200000 5120000000    0%   /System/Volumes/Data
+/dev/disk4s1      31256576     15552  31241024     1%       1          0  100%   /Volumes/EXAMPLE
+map auto_home            0         0         0   100%       0          0     -   /System/Volumes/Data/home

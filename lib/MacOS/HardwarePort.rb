@@ -77,11 +77,3 @@ module MacOS
 
   end
 end
-
-if __FILE__ == $0
-  require 'pp'
-  pp MacOS::HardwarePort.all
-  p MacOS::HardwarePort.find_by_device('en4')
-  p MacOS::HardwarePort.find_by_name('Wi-Fi')
-  p MacOS::HardwarePort.find_by_interface('en4')
-end

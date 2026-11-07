@@ -1,0 +1,6 @@
+# TODO
+
+1. MacOS::Groups, alongside MacOS::Users.
+2. + MacOS.boot_time, the time the Mac booted, from sysctl kern.boottime.
+3. ~ MacOS::Defaults#to_yaml: Nested values as further levels of YAML, rather than as hashes.
+4. ~ MacOS::DiskUtil.external_volumes: Only the external volumes, rather than every mounted one.

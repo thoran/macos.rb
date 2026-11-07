@@ -97,14 +97,3 @@ module MacOS
 
   end
 end
-
-if __FILE__ == $0
-  require 'URI/write'
-  url = 'https://distfiles.macports.org/MacPorts/MacPorts-2.0.4-10.7-Lion.dmg'
-  URI.write(url)
-  MacOS::Dmg.verbose = true
-  dmg = MacOS::Dmg.new(path_to_dmg: 'MacPorts-2.0.4-10.7-Lion.dmg', package: 'MacPorts-2.0.4', mount_point: 'MacPorts-2.0.4')
-  dmg.mount
-  #dmg.install
-  dmg.dismount
-end
