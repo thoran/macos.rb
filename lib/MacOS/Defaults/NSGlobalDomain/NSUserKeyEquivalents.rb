@@ -1,18 +1,20 @@
 # MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents.rb
 # MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents
 
-# 20250211
-# 0.2.0
+# 20261107
+# 0.2.1
 
-# Changes:
+# Changes since 0.1:
 # -/0: Parse existing assignments and dump yaml.
 # 1. + read_keys()
 # 2. + to_yaml()
+# 0/1:
+# 3. /module Defaults/class Defaults/
 
 require 'String/grep'
 
 module MacOS
-  module Defaults
+  class Defaults
     module NSGlobalDomain
       class NSUserKeyEquivalents
         KEY_MAP = {
