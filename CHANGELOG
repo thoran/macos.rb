@@ -2,6 +2,11 @@
 
 ## 20261107
 
+0.49.6: ~ MacOS::Keychain.wifi_password: nil where the keychain has no password for the network, rather than a NoMethodError.
+
+1. ~ MacOS::Keychain.wifi_password: stderr[/password: "(.+)"/, 1], in place of stderr.match(/password: "(.+)"/)[1], which called [] on nil when nothing matched.
+2. ~ MacOS::VERSION: /0.49.5/0.49.6/
+
 0.49.5: ~ MacOS::LaunchControl: An instance holds the plist it's made with, and unloads it.
 
 1. ~ MacOS::LaunchControl#initialize: /init/initialize/. As init, new(path_to_plist) raised an ArgumentError and new left the path unset.
