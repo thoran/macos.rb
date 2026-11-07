@@ -2,6 +2,15 @@
 
 ## 20261107
 
+0.49.11: ~ MacOS::Apple80211: Where airport -I gives nothing, as from macOS 14.4 on, the attributes come from system_profiler SPAirPortDataType.
+
+1. ~ MacOS::Apple80211.attributes: airport -I's, or where it gives none, the current network's from system_profiler SPAirPortDataType, with its Channel and Security as channel and link auth too, and its name as SSID where macOS doesn't redact it.
+2. + MacOS::Apple80211.system_profiler_airport
+3. + MacOS::Apple80211.airport_attributes, private: airport -I's attributes, as .attributes read them before, less the WARNING line printed in their place from macOS 14.4 on.
+4. + MacOS::Apple80211.system_profiler_attributes, private.
+5. ~ MacOS::Apple80211.airport_i: '' where airport isn't there, rather than an Errno::ENOENT.
+6. ~ MacOS::VERSION: /0.49.10/0.49.11/
+
 0.49.10: ~ lib/MacOS/VPN.rb: The header's second line names MacOS::VPN, rather than repeating the file's name.
 
 1. ~ lib/MacOS/VPN.rb: /# MacOS\/VPN.rb/# MacOS::VPN/ in the header's second line.
