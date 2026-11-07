@@ -12,35 +12,36 @@ module MacOS
     class << self
       def parse(output = nil)
         output ||= self.output
-        @ifconfigs = []
-        interface = nil
+        ifconfigs = []
+        ifconfig = nil
         output.each_line do |line|
           if line =~ /^\t/
             case line
             when /ether/
-              @ifconfig.mac_address = line.capture(/ *ether (.+) $/)
+              ifconfig.mac_address = line.capture(/ *ether (.+?) ?$/)
             when /inet /
               if line.match(/broadcast/)
-                @ifconfig.ipv4_address, @ifconfig.netmask, @ifconfig.broadcast_address = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) broadcast (.+)$/)
+                ifconfig.ipv4_address, ifconfig.netmask, ifconfig.broadcast_address = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) broadcast (.+)$/)
               elsif line.match(/-->/)
-                ipv4_address_from, ipv4_address_to, @ifconfig.netmask = line.captures(/inet (.+) --> (.+) netmask (.+)$/)
-                @ifconfig.ipv4_address = ipv4_address_from
+                ipv4_address_from, ipv4_address_to, ifconfig.netmask = line.captures(/inet (.+) --> (.+) netmask (.+)$/)
+                ifconfig.ipv4_address = ipv4_address_from
               else
-                @ifconfig.ipv4_address, @ifconfig.netmask = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) $/)
+                ifconfig.ipv4_address, ifconfig.netmask = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+?) ?$/)
               end
             when /status\:/
-              @ifconfig.status = line.capture(/ *status: (.+)$/)
+              ifconfig.status = line.capture(/ *status: (.+)$/)
             end
           else
-            @ifconfigs << @ifconfig if @ifconfig
-            @ifconfig = new
-            @ifconfig.interface, rest_of_line = line.captures(/^(.+?): (.+)$/)
+            ifconfigs << ifconfig if ifconfig
+            ifconfig = new
+            ifconfig.interface, rest_of_line = line.captures(/^(.+?): (.+)$/)
             if rest_of_line =~ /flags=\w+<([^>]+)>/
-              @ifconfig.flags = $1.split(',')
+              ifconfig.flags = $1.split(',')
             end
           end
         end
-        @ifconfigs << @ifconfig
+        ifconfigs << ifconfig if ifconfig
+        ifconfigs
       end
       alias_method :all, :parse
       alias_method :interfaces, :parse
@@ -119,7 +120,7 @@ module MacOS
         run('sudo', 'ifconfig', interface_name, 'destroy')
       end
 
-      # private
+      private
 
       def output
         `ifconfig -a`
