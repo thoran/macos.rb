@@ -1,15 +1,6 @@
 # MacOS/Voice.rb
 # MacOS::Voice
 
-# 20261107
-# 0.0.1
-
-# Changes since 0.0:
-# 0/1:
-# 1. ~ all(): Quote the ?, which the shell otherwise matched against one-character filenames.
-# 2. ~ new_from_line(): Read a name with spaces in it whole.
-# 3. ~ new_from_line(): - the newline at the end of the description.
-
 # Notes:
 # 1. Taken from Kernel/say.rb 0.4.2.
 

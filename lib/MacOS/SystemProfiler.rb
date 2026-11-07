@@ -1,9 +1,6 @@
 # MacOS/SystemProfiler.rb
 # MacOS::SystemProfiler
 
-# 20190831
-# 0.3.0
-
 # Description: This uses the built-in system_profiler command on MacOS to get access to the version numbers on any
 # version of MacOS which has a system_profiler command and which returns results in a known format.
 

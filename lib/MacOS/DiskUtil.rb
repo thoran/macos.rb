@@ -1,9 +1,6 @@
 # MacOS/DiskUtil.rb
 # MacOS::DiskUtil
 
-# 20240113
-# 0.0.0
-
 require 'plist'
 
 module MacOS

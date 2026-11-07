@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 # MacOS::Keychain
 
-# 20210220
-# 0.1.1
-
 require 'open3'
 require 'shellwords'
 

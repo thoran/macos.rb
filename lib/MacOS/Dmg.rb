@@ -1,20 +1,7 @@
 # MacOS/Dmg.rb
 # MacOS::Dmg
 
-# 20250506
-# 0.8.0
-
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.
-
-# Changes since 0.7:
-# -/0: Explicitly specify the mount point or fallback to using the disk image name (sans '.pkg') if the mount point isn't speficifed, rather than assume that it will be the same as the package name.
-# 1. Switch to using named arguments in a number of places.
-# 2. + #mount_point(): Previously the package name was assumed, but that's not always true.
-# 3. + self.full_path_to_mount_point()
-# 4. - #path_to_dmg=(): Replaced with `attr_accessor :path_to_dmg`.
-# 5. - #package(): Not necessary and replaced with `attr_accessor :package` also.
-# 6. ~ self.run_installer(): Pass in mount point instead and use named arguments.
-# 7. ~ self.unmount(): Properly use the mount_point argument.
 
 require 'Array/all_but_last'
 require 'Module/alias_methods'

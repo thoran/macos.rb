@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 # MacOS::USBFlashDrive
 
-# 20210301
-# 0.0.0
-
 require 'open3'
 require 'shellwords'
 require 'Thoran/String/Captures/captures'

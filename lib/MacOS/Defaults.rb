@@ -1,12 +1,6 @@
 # MacOS/Defaults.rb
 # MacOS::Defaults
 
-# 20190828
-# 0.4.0
-
-# Changes since 0.3:
-# 1. /OSX/MacOS/
-
 # Todo:
 # 1. Handle compound/vector values in to_yaml().  Currently dumping hashes when it should be creating another level or more levels of hierarchy.
 

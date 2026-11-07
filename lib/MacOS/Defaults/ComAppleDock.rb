@@ -1,22 +1,6 @@
 # MacOS/Defaults/ComAppleDock.rb
 # MacOS::Defaults::ComAppleDock
 
-# 20261107
-# 0.5.3
-
-# Changes since 0.4:
-# -/0: Read the Dock's persistent apps back, and write them as YAML.
-# 1. + peristent_app_paths()
-# 2. + read()
-# 3. + to_yaml()
-# 0/1:
-# 4. + boolean_to_yes_no()
-# 5. ~ peristent_app_paths(), ~ read(), ~ to_yaml()
-# 1/2:
-# 6. ~ read()
-# 2/3:
-# 7. /module Defaults/class Defaults/
-
 require 'plist'
 
 module MacOS

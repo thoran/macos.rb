@@ -1,25 +1,6 @@
 # MacOS/IfConfig.rb
 # MacOS::IfConfig
 
-# 20260125
-# 0.7.0
-
-# Changes since 0.6:
-# -/0: Add support for virtual/tunnel interfaces (utun, etc.) via flag parsing and enhanced up? detection. Add interface control methods for bringing down and destroying interfaces. Add pattern matching for finding groups of interfaces.
-# 1. + require 'Kernel/run'
-# 2. + require 'Regexp/to_regexp'
-# 3. + require 'String/to_regexp'
-# 4. ~ parse(): Parse flags from interface header line to support virtual interfaces.
-# 5. + alias_method :all_interfaces, :parse
-# 6. + all_matching(pattern): Find all interfaces matching a pattern.
-# 7. + bring_down_interface(interface_name): Bring down a specific interface.
-# 8. + bring_down_matching_interfaces(pattern): Bring down all interfaces matching a pattern.
-# 9. + destroy_interface(interface_name): Destroy a specific interface.
-# 10. + attr_accessor :flags
-# 11. ~ initialize(): Add flags parameter.
-# 12. ~ up?(): Check both physical (status-based) and virtual (flags-based) interfaces.
-# 13. + virtual?(): Detect if interface is virtual/tunnel interface.
-
 require 'Kernel/run'
 require 'Regexp/to_regexp'
 require 'String/to_regexp'

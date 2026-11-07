@@ -1,12 +1,6 @@
 # MacOS/LaunchControl.rb
 # MacOS::LaunchControl
 
-# 20190828
-# 0.1.0
-
-# Changes since 0.1:
-# 1. /OSX/MacOS/
-
 module MacOS
   class LaunchControl
 
