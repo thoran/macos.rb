@@ -18,7 +18,7 @@ module MacOS
 
       def wifi_password(wifi_ssid)
         stdout, stderr, status = find_generic_password(wifi_ssid)
-        stderr.match(/password: "(.+)"/)[1]
+        stderr[/password: "(.+)"/, 1]
       end
 
     end # class << self
