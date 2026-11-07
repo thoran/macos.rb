@@ -2,6 +2,13 @@
 
 ## 20261107
 
+0.49.5: ~ MacOS::LaunchControl: An instance holds the plist it's made with, and unloads it.
+
+1. ~ MacOS::LaunchControl#initialize: /init/initialize/. As init, new(path_to_plist) raised an ArgumentError and new left the path unset.
+2. ~ MacOS::LaunchControl#unload: path_to_plist defaults to the instance's own, as #load uses.
+3. ~ MacOS::LaunchControl.load, .unload: The plist's path escaped for the shell, so as a path with a space in it is one argument; + require 'shellwords'.
+4. ~ MacOS::VERSION: /0.49.4/0.49.5/
+
 0.49.4: ~ MacOS::Defaults: Every domain, rather than one; a Defaults for each, rather than an ArgumentError; and from_yaml writes what to_yaml wrote.
 
 1. ~ MacOS::Defaults.domains: `defaults domains`.chomp.split(', '), in place of .split('\n'), which split on a backslash and an n. defaults domains gives every domain on one line, separated by commas.
