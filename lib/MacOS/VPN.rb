@@ -1,5 +1,5 @@
 # MacOS/VPN.rb
-# MacOS/VPN.rb
+# MacOS::VPN
 
 # Notes:
 # 1. Taken from mercurial-0.4.3.
