@@ -43,17 +43,17 @@ module MacOS
       end
 
       def free_bytes_for_device_id(device_id)
-        `df`.split("\n").detect do |partition_data|
+        `df -k`.split("\n").detect do |partition_data|
           if partition_data.split.first.match(device_id)
-            return partition_data.split[2]
+            return partition_data.split[3].to_i * 1024
           end
         end
       end
 
       def free_bytes_for_volume_name(volume_name)
-        `df`.split("\n").detect do |partition_data|
+        `df -k`.split("\n").detect do |partition_data|
           if partition_data.split.last.match(volume_name)
-            return partition_data.split[2]
+            return partition_data.split[3].to_i * 1024
           end
         end
       end
