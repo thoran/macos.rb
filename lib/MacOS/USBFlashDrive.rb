@@ -3,7 +3,6 @@
 
 require 'open3'
 require 'shellwords'
-require 'Thoran/String/Captures/captures'
 
 module MacOS
   class USBFlashDrive
@@ -19,7 +18,7 @@ module MacOS
 
       def all_mount_points
         stdout, stderr, status = raw_system_profiler_output
-        stdout.captures(/Mount Point: (.+)$/)
+        stdout.scan(/Mount Point: (.+)$/).flatten
       end
 
     end # class << self
