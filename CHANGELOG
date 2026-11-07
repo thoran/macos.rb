@@ -2,6 +2,16 @@
 
 ## 20261107
 
+0.49.4: ~ MacOS::Defaults: Every domain, rather than one; a Defaults for each, rather than an ArgumentError; and from_yaml writes what to_yaml wrote.
+
+1. ~ MacOS::Defaults.domains: `defaults domains`.chomp.split(', '), in place of .split('\n'), which split on a backslash and an n. defaults domains gives every domain on one line, separated by commas.
+2. ~ MacOS::Defaults.all, .bulk_export_to_plist_files, .bulk_import_from_plist_files, .from_yaml: new(domain: domain), in place of new(domain), initialize taking domain: only.
+3. ~ MacOS::Defaults.from_yaml: DEFAULT_YAML_FILENAME, in place of DEFAULT_YAML_FILE, which isn't defined.
+4. ~ MacOS::Defaults#from_yaml: + attributes, the list of single key: value pairs to_yaml writes for the domain, each written with defaults write; true where every write succeeds. It read an attributes it was never given.
+5. ~ MacOS::Defaults.from_yaml: Each domain's attributes passed on to #from_yaml.
+6. + MacOS::Defaults#defaults_arguments, private: a value as defaults write takes it, with -bool, -int, -float, -array, -dict or -string as its type.
+7. ~ MacOS::VERSION: /0.49.3/0.49.4/
+
 0.49.3: Core Ruby in place of the extension libraries other than Version, each of which patched a core class of any program loading macos.rb.
 
 1. ~ MacOS::Applications.start: system('open', path, exception: true), in place of Kernel.run.

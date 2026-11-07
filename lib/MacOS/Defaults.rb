@@ -22,33 +22,33 @@ module MacOS
     class << self
 
       def domains
-        `defaults domains`.split('\n')
+        `defaults domains`.chomp.split(', ')
       end
       alias_method :all_domains, :domains
 
       def all
         domains.collect do |domain|
-          self.new(domain)
+          self.new(domain: domain)
         end
       end
 
       def bulk_export_to_plist_files
         domains.each do |domain|
-          self.new(domain).export
+          self.new(domain: domain).export
         end
       end
 
       def bulk_import_from_plist_files
         domains.each do |domain|
-          self.new(domain).import
+          self.new(domain: domain).import
         end
       end
 
       def from_yaml(yaml_filename = nil)
-        yaml_filename ||= DEFAULT_YAML_FILE
+        yaml_filename ||= DEFAULT_YAML_FILENAME
         yaml_defaults = YAML.load_file(yaml_filename)
         yaml_defaults.each do |domain, attributes|
-          self.new(domain).from_yaml
+          self.new(domain: domain).from_yaml(attributes)
         end
       end
 
@@ -92,10 +92,12 @@ module MacOS
     end
     alias_method :to_yml, :to_yaml
 
-    def from_yaml
-      attributes.each do |attribute|
+    # Writes each attribute, as to_yaml writes them, a list of single key: value pairs, true where every write succeeds.
+    def from_yaml(attributes)
+      attributes.map do |attribute|
         key, value = attribute.to_a.first
-      end
+        system('defaults', 'write', @domain, key.to_s, *defaults_arguments(value))
+      end.all?
     end
 
     def domain_valid?
@@ -104,6 +106,20 @@ module MacOS
 
     def global_domain?
       @domain == '-globalDomain'
+    end
+
+    private
+
+    # A value as defaults write takes it, its type given first.
+    def defaults_arguments(value)
+      case value
+      when true, false then ['-bool', value.to_s]
+      when Integer then ['-int', value.to_s]
+      when Float then ['-float', value.to_s]
+      when Array then ['-array', *value.map(&:to_s)]
+      when Hash then ['-dict', *value.flat_map{|k, v| [k.to_s, v.to_s]}]
+      else ['-string', value.to_s]
+      end
     end
 
   end
