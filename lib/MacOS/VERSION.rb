@@ -2,5 +2,5 @@
 # MacOS::VERSION
 
 module MacOS
-  VERSION = '0.49.0'
+  VERSION = '0.49.1'
 end

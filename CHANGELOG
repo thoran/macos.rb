@@ -2,6 +2,16 @@
 
 ## 20261107
 
+0.49.1: ~ MacOS::IfConfig.parse: Each call starts afresh, and reads its lines with or without a trailing space; MacOS::IfConfig.output is private again.
+
+1. ~ MacOS::IfConfig.parse: ifconfigs and ifconfig are locals, in place of @ifconfigs and @ifconfig on the class. @ifconfig was never reset, so every call after the first began with the previous call's last interface, and returned it twice.
+2. ~ MacOS::IfConfig.parse: - the unused local interface.
+3. ~ MacOS::IfConfig.parse: Output with no interfaces gives [], rather than [nil].
+4. ~ MacOS::IfConfig.parse: / *ether (.+?) ?$/, in place of / *ether (.+) $/. ifconfig no longer ends these lines with a space, so no interface had a MAC address.
+5. ~ MacOS::IfConfig.parse: / *inet (\d+(?:\.\d+){3}) netmask (.+?) ?$/, in place of one ending (.+) $/. Nor does it end an inet line without a broadcast address with one, so loopback had no IPv4 address.
+6. ~ MacOS::IfConfig.output: private, as it was until IfConfig 0.6.1 commented the line out.
+7. ~ MacOS::VERSION: /0.49.0/0.49.1/
+
 0.49.0: + lib/MacOS/VERSION.rb; - each file's own date, version and changes from its header; + CHANGELOG.
 
 1. + lib/MacOS/VERSION.rb: MacOS::VERSION, the library's version.
