@@ -1,26 +1,6 @@
 # MacOS/HardwarePort.rb
 # MacOS::HardwarePort
 
-# 20190829
-# 0.3.1
-
-# Changes since 0.2:
-# 1. /Hardware/HardwarePort at the top of the file.
-# 2. /new()/initialize()/ (Really!? I did that!? Twice!)
-# 3. ~ MacOS::HardwarePort.parse, so that it only puts in one entry per hardware port.
-# 4. - all()
-# 5. + alias_method :all, :parse
-# 6. + alias_method :hardware_ports, :parse
-# 7. + alias_method :ports, :parse
-# 8. + MacOS::HardwarePort.find_by_name
-# 9. + MacOS::HardwarePort.find_by_ethernet_address
-# 10. + MacOS::HardwarePort#mac_address
-# 0/1
-# 11. /MacOS::HardwarePort.find_by_device/MacOS::HardwarePort.find_by_interface/
-# 11. + alias_method :find_by_device, :find_by_interface
-# 12. + MacOS::HardwarePort#interface
-# 13. + alias_method :find_by_hardware_port, :find_by_name
-
 require 'Thoran/String/Captures/captures'
 
 module MacOS

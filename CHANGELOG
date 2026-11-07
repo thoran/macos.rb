@@ -1,0 +1,472 @@
+# macos.rb/CHANGELOG
+
+## 20261107
+
+0.49.0: + lib/MacOS/VERSION.rb; - each file's own date, version and changes from its header; + CHANGELOG.
+
+1. + lib/MacOS/VERSION.rb: MacOS::VERSION, the library's version.
+2. ~ lib/MacOS.rb: + require 'MacOS/VERSION'
+3. ~ lib/MacOS.rb and every file under lib/MacOS: - the date and version lines and the changes noted since the last version, the library's version and the CHANGELOG taking their place.
+4. + CHANGELOG: an entry for every version from 0.0.0, each what its commit says.
+
+0.48.0: MacOS 0.1.0: Require every library; + MacOS.version, in place of lib/MacOS/Version.rb.
+
+1. + require 'MacOS/Apple80211', 'MacOS/Applications', 'MacOS/Defaults/ComAppleDock', 'MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents', 'MacOS/DiskUtil', 'MacOS/Keychain', 'MacOS/USBFlashDrive', 'MacOS/Users', 'MacOS/Voice' and 'MacOS/VPN'.
+2. - require 'MacOS/Version'
+3. + MacOS.version, taken from lib/MacOS/Version.rb 0.1.0.
+4. - lib/MacOS/Version.rb, and with it MacOS::VERSION::STRING, which MacOS.version.to_s gives.
+
+0.47.2: /module Defaults/class Defaults/ for ComAppleDock and NSUserKeyEquivalents, so as they load beside MacOS::Defaults, which is a class.
+
+1. ~ MacOS::Defaults::ComAppleDock 0.5.3: /module Defaults/class Defaults/
+2. ~ MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents 0.2.1: /module Defaults/class Defaults/
+
+0.47.1: MacOS::Voice 0.0.1: Quote say's ?; read names with spaces in them whole; - the newline at the end of each description.
+
+1. ~ all(): say -v '?', the shell otherwise matching ? against one-character filenames.
+2. ~ new_from_line(): A name with spaces in it, as Bad News, is read whole, rather than its first word being taken as the name and its second as the localisation.
+3. ~ new_from_line(): - the newline at the end of the description.
+
+0.47.0: MacOS::Voice 0.0.0: + MacOS::Voice: the voices say knows, each with its name, localisation and description, and a random one, taken from Kernel/say.rb 0.4.2.
+
+1. ~ lib/Kernel/run.rb: Kernel#run /0.3.0/0.3.1/
+
+
+## 20260605
+
+0.46.0: MacOS::Applications 0.0.0: + MacOS::Applications: finding installed .app bundles across the system, local and user domains, as which does for executables.
+
+0.45.0: MacOS::Users 0.0.0: + MacOS::Users: the real user accounts, without the system and service ones.
+
+1. - lib/Array/extract_optionsX.rb: Array#extract_options! 0.2.0
+2. ~ lib/Kernel/run.rb: Kernel#run /0.1.5/0.3.0/
+3. - lib/Thoran/Array/ExtractOptionsX/extract_optionsX.rb: Thoran::Array::ExtractOptions#extract_options! 0.2.0
+
+
+## 20260125
+
+0.44.0: MacOS::IfConfig 0.7.0: Virtual and tunnel interfaces (utun and the like), bringing interfaces down and destroying them, and finding interfaces by pattern.
+
+1. + require 'Kernel/run'
+2. + require 'Regexp/to_regexp'
+3. + require 'String/to_regexp'
+4. ~ parse(): Parse flags from interface header line to support virtual interfaces.
+5. + alias_method :all_interfaces, :parse
+6. + all_matching(pattern): Find all interfaces matching a pattern.
+7. + bring_down_interface(interface_name): Bring down a specific interface.
+8. + bring_down_matching_interfaces(pattern): Bring down all interfaces matching a pattern.
+9. + destroy_interface(interface_name): Destroy a specific interface.
+10. + attr_accessor :flags
+11. ~ initialize(): Add flags parameter.
+12. ~ up?(): Check both physical (status-based) and virtual (flags-based) interfaces.
+13. + virtual?(): Detect if interface is virtual/tunnel interface.
+14. + lib/Array/extract_optionsX.rb: Array#extract_options! 0.2.0
+15. + lib/Kernel/run.rb: Kernel#run 0.1.5
+16. + lib/Regexp/to_regexp.rb: Regexp#to_regexp 0.0.0
+17. + lib/String/to_regexp.rb: String#to_regexp 0.3.0
+18. + lib/Thoran/Array/ExtractOptionsX/extract_optionsX.rb: Thoran::Array::ExtractOptions#extract_options! 0.2.0
+
+
+## 20250925
+
+0.43.0: MacOS::VPN 0.0.0: + MacOS::VPN.up?, taken from mercurial 0.4.3.
+
+
+## 20250506
+
+0.42.0: MacOS::Dmg 0.8.0: Explicitly specify the mount point or fallback to using the disk image name (sans '.pkg') if the mount point isn't specified, rather than assume that it will be the same as the package name.
+
+1. Switch to using named arguments in a number of places.
+2. + #mount_point(): Previously the package name was assumed, but that's not always true.
+3. + self.full_path_to_mount_point()
+4. - #path_to_dmg=(): Replaced with `attr_accessor :path_to_dmg`.
+5. - #package(): Not necessary and replaced with `attr_accessor :package` also.
+6. ~ self.run_installer(): Pass in mount point instead and use named arguments.
+7. ~ self.unmount(): Properly use the mount_point argument.
+
+
+## 20250419
+
+0.41.3: MacOS::IfConfig 0.6.1: ~ MacOS::Ifconfig.parse: Rework the regex for the '-->' case.
+
+
+## 20250212
+
+0.41.2: MacOS::Defaults::ComAppleDock 0.5.2: ~ read()
+
+0.41.1: MacOS::Defaults::ComAppleDock 0.5.1: + boolean_to_yes_no()
+
+1. + boolean_to_yes_no()
+2. ~ peristent_app_paths(), ~ read(), ~ to_yaml()
+
+0.41.0: MacOS::Defaults::ComAppleDock 0.5.0: Reading the Dock's persistent apps back, and writing them as YAML.
+
+1. + peristent_app_paths(), + read(), + to_yaml()
+
+
+## 20250211
+
+0.40.0: MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents 0.2.0: Reading the shortcuts back, and writing them as YAML.
+
+1. + load(), + read_keys(), + parse_key_code(), + to_yaml()
+2. ~ key_code()
+
+0.39.0: MacOS::Defaults::ComAppleDock 0.4.0: One writer for general and boolean attributes alike.
+
+1. - general_attribute_write_command_string(), - boolean_attribute_write_command_string(), - load_general_attribute(), - load_boolean_attribute()
+2. + attribute_write_command(), + load_attribute()
+3. ~ load()
+4. - lib/FalseClass/to_boolean.rb: FalseClass#to_boolean 0.0.0
+5. - lib/Integer/to_boolean.rb: Integer#to_boolean 0.0.0
+6. - lib/NilClass/to_boolean.rb: NilClass#to_boolean 0.0.0
+7. - lib/String/to_boolean.rb: String#to_boolean 0.9.0
+8. - lib/TrueClass/to_boolean.rb: TrueClass#to_boolean 0.0.0
+9. - lib/_meta/to_boolean.rb: _meta/to_boolean 0.0.0
+
+0.38.0: MacOS::Defaults::ComAppleDock 0.3.0: Persistent apps rather than items, and general and boolean attributes apart.
+
+1. - item_plist(), - urlified_item_string(), - defaults_write_command(), - add_item(), - load_items(), - delete_items()
+2. + app_plist_data(), + urlified_app_string(), + persistent_app_write_command(), + add_persistent_app(), + load_persistent_apps()
+3. + delete_item()
+4. - attribute_command_string(), - load_attribute(), - load_attributes()
+5. + general_attribute_write_command_string(), + boolean_attribute_write_command_string(), + load_general_attribute(), + load_boolean_attribute()
+6. ~ delete_all_items(), ~ load()
+7. + lib/FalseClass/to_boolean.rb: FalseClass#to_boolean 0.0.0
+8. + lib/Integer/to_boolean.rb: Integer#to_boolean 0.0.0
+9. + lib/NilClass/to_boolean.rb: NilClass#to_boolean 0.0.0
+10. + lib/String/to_boolean.rb: String#to_boolean 0.9.0
+11. + lib/TrueClass/to_boolean.rb: TrueClass#to_boolean 0.0.0
+12. + lib/_meta/to_boolean.rb: _meta/to_boolean 0.0.0
+
+0.37.0: MacOS::Defaults::ComAppleDock 0.2.0: Adding, loading and deleting items, and loading the Dock's attributes.
+
+1. - write_item(), - write_items(), - delete()
+2. + add_item(), + load_items(), + delete_items()
+3. + attribute_command_string(), + load_attribute(), + load_attributes(), + load()
+4. ~ delete_all_items()
+
+
+## 20250210
+
+0.36.0: MacOS::Defaults::ComAppleDock 0.1.0: Items rather than dock items, and deleting them.
+
+1. - dock_item(), - urlified_dock_item_string(), - write_dock_item(), - write_dock_items()
+2. + item_plist(), + urlified_item_string(), + write_item(), + write_items()
+3. + delete(), + delete_all_items()
+4. ~ defaults_write_command()
+
+0.35.0: MacOS::Defaults::ComAppleDock 0.0.0: + MacOS::Defaults::ComAppleDock: the Dock's items.
+
+0.34.0: MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents 0.1.0: ~ key_code()
+
+0.33.0: MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents 0.0.0: + MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents: the keyboard shortcuts set for menu items.
+
+
+## 20240113
+
+0.32.0: MacOS::DiskUtil 0.0.0: + MacOS::DiskUtil: volumes and their partitions, from diskutil's plist output.
+
+
+## 20230212
+
+0.31.0: MacOS::Dmg 0.7.0: ~ self.unmount(): Rather than assume the path or the name of the package, specify the mount point to unmount.
+
+1. ~ lib/Ordinal.rb, lib/Ordinal/Array.rb: Ordinal /0.2.0/0.2.1/
+2. ~ lib/Version.rb: Version /0.13.1/0.14.0/
+
+
+## 20210301
+
+0.30.0: MacOS::USBFlashDrive 0.0.0: + MacOS::USBFlashDrive: the mount points of USB flash drives, from system_profiler.
+
+
+## 20210220
+
+0.29.1: MacOS::Keychain 0.1.1: Shellwords for the key given to security.
+
+1. + require 'shellwords'
+2. ~ find_generic_password_command()
+
+
+## 20210212
+
+0.29.0: MacOS::Keychain 0.1.0: Open3 rather than backticks, security writing the password to standard error.
+
+1. + require 'open3'
+2. + find_generic_password_command()
+3. ~ find_generic_password()
+4. ~ wifi_password()
+
+
+## 20201218, 20210206
+
+0.28.0: MacOS::Keychain 0.0.0: + MacOS::Keychain: generic passwords, and a Wi-Fi network's password.
+
+
+## 20210206
+
+0.27.0: MacOS::Apple80211 0.0.0: + MacOS::Apple80211: the Wi-Fi connection's attributes, among them its channel, SSID and link auth.
+
+1. - lib/String/each.rb: String#each 0.1.0
+2. ~ lib/String/grep.rb: String#grep /0.1.1/0.2.0/
+
+
+## 20200429
+
+0.26.0: MacOS::IfConfig 0.6.0: Finders by interface, MAC address and IPv4 address.
+
+1. + MacOS::Ifconfig.find_by_interface
+2. + MacOS::Ifconfig.find_by_mac_address
+3. + MacOS::Ifconfig.find_by_ipv4_address
+
+
+## 20200428
+
+0.25.1: MacOS::IfConfig 0.5.1: ~ MacOS::IfConfig.parse, so as it correctly handles the last interface.
+
+0.25.0: MacOS::IfConfig 0.5.0: VPN tunnels, and interfaces by status: active, inactive and up.
+
+1. ~ MacOS::IfConfig.parse, so as it can handle VPN tunnels.
+2. ~ MacOS::IfConfig.parse, so that it now loads an instance with the value of the status field.
+3. + MacOS::IfConfig.inactive_interfaces
+4. + MacOS::IfConfig.inactive_interfaces_names
+5. + MacOS::IfConfig.up_interfaces
+6. + MacOS::IfConfig.up_interfaces_names
+7. /MacOS::IfConfig @active/MacOS::IfConfig @status/
+8. + MacOS::IfConfig#status
+9. ~ MacOS::IfConfig#active?, so as to make use of @status
+10. + MacOS::IfConfig#inactive?
+11. + MacOS::IfConfig#up?
+
+0.24.0: MacOS::IfConfig 0.4.0: Aligned MacOS::IfConfig more closely with MacOS::HardwarePort.
+
+1. ~ MacOS::IfConfig#parse --> MacOS::IfConfig.parse
+2. ~ MacOS::IfConfig#interfaces --> MacOS::IfConfig.interfaces && now returns the same as parse.
+3. ~ MacOS::IfConfig#output --> MacOS::IfConfig.output
+4. ~ MacOS::IfConfig#active_interfaces --> MacOS::IfConfig.active_interfaces
+5. + MacOS::IfConfig.interface_names (formerly MacOS::IfConfig#interfaces)
+6. + MacOS::IfConfig.active_interfaces_names
+7. + MacOS::IfConfig.mac_addresses
+8. + MacOS::IfConfig.ipv4_addresses
+9. + require 'Thoran/String/Capture/capture', so as to support the increased complexity in MacOS::IfConfig.parse.
+
+
+## 20191120, 21
+
+0.23.1: MacOS::IfConfig 0.3.1: /new()/initialize()/, a constructor which had been defining new.
+
+1. /new()/initialize()/ (Really!? I did that!?)
+2. Changed the self-run block to use p instead of pp.
+
+
+## 20190901
+
+0.23.0: MacOS 0.0.0: + lib/MacOS.rb, requiring the MacOS libraries.
+
+
+## 20190831
+
+0.22.0: MacOS::SystemProfiler 0.3.0: The rest of the software overview: kernel, boot volume and mode, computer and user name, secure virtual memory, system integrity protection and time since boot.
+
+1. + system_profiler_output(), + system_version_data(), + system_version_string()
+2. + kernel_version_data(), + kernel_name(), + kernel_version_string(), + kernel_version()
+3. + boot_volume_data(), + boot_mode_data(), + computer_name_data(), + username_data()
+4. + secure_virtual_memory_data(), + system_integrity_protection_data(), + time_since_boot_data()
+5. ~ system_version()
+
+0.21.0: MacOS.version 0.1.0: MacOS::VERSION::STRING, the parts being left to the Version.
+
+1. - major_version(), - minor_version(), - tiny_version()
+2. ~ version()
+3. + MacOS::VERSION::STRING
+
+0.20.0: MacOS.version 0.0.0: + MacOS.version, and its major, minor and tiny parts.
+
+0.19.0: MacOS::SystemProfiler 0.2.0: A Version rather than a string.
+
+1. + require 'Version'
+2. ~ system_version()
+3. ~ major_system_version()
+4. ~ minor_system_version()
+5. ~ tiny_system_version()
+6. + lib/Thoran/String/Capture/capture.rb: Thoran::String::Capture#capture 0.3.1
+7. + lib/Version.rb: Version 0.13.1
+
+0.18.0: MacOS::SystemProfiler 0.1.0: + MacOS::SystemProfiler, taken from Platform's Platform::OS::OSX::SystemProfiler, reading the version of MacOS 10.14 as well as of OSX 10.4 to 10.9.
+
+1. + lib/Ordinal.rb, lib/Ordinal/Array.rb: Ordinal 0.2.0
+2. + lib/String/each.rb: String#each 0.1.0
+3. + lib/String/grep.rb: String#grep 0.1.1
+
+
+## 20190829
+
+0.17.1: MacOS::HardwarePort 0.3.1: Finding by interface rather than by device.
+
+1. /MacOS::HardwarePort.find_by_device/MacOS::HardwarePort.find_by_interface/
+2. + alias_method :find_by_device, :find_by_interface
+3. + MacOS::HardwarePort#interface
+4. + alias_method :find_by_hardware_port, :find_by_name
+
+
+## 20190828
+
+0.17.0: MacOS::HardwarePort 0.3.0: One entry per hardware port, finders by name and by Ethernet address, and #mac_address.
+
+1. /Hardware/HardwarePort at the top of the file.
+2. /new()/initialize()/ (Really!? I did that!? Twice!)
+3. ~ MacOS::HardwarePort.parse, so that it only puts in one entry per hardware port.
+4. - all()
+5. + alias_method :all, :parse
+6. + alias_method :hardware_ports, :parse
+7. + alias_method :ports, :parse
+8. + MacOS::HardwarePort.find_by_name
+9. + MacOS::HardwarePort.find_by_ethernet_address
+10. + MacOS::HardwarePort#mac_address
+
+0.16.0: /OSX/MacOS/ for HardwarePort, IfConfig, Dmg, Defaults and LaunchControl.
+
+1. ~ MacOS::HardwarePort 0.2.0: /OSX/MacOS/
+2. ~ MacOS::IfConfig 0.3.0: /OSX/MacOS/
+3. ~ MacOS::Dmg 0.6.0: /OSX/MacOS/
+4. ~ MacOS::Defaults 0.4.0: /OSX/MacOS/
+5. ~ MacOS::LaunchControl 0.1.0: /OSX/MacOS/
+
+
+## 20190321
+
+0.15.1: OSX::Defaults 0.3.1: + from_yaml()
+
+1. + from_yaml()
+2. ~ to_yaml()
+
+
+## 20181023
+
+0.15.0: OSX::Defaults 0.3.0: ~ to_yaml()
+
+0.14.0: OSX::Defaults 0.2.0: + to_yaml()
+
+0.13.0: OSX::Defaults 0.1.0: Exporting and importing one domain, beside all of them.
+
+1. + export()
+2. + import()
+3. + domain_valid?()
+4. + global_domain?()
+5. ~ domains()
+6. ~ bulk_export_to_plist_files()
+7. ~ bulk_import_from_plist_files()
+8. ~ to_h()
+
+0.12.0: OSX::Defaults 0.0.0: + OSX::Defaults: the defaults domains, exported to and imported from plist files in bulk.
+
+1. - lib/Array/lastX.rb: Array#lastX 20060630
+2. ~ lib/Module/alias_methods.rb: Module#alias_methods /0.0.0/0.1.0/
+3. + lib/Thoran/Array/AllButLast/all_but_last.rb: Thoran::Array::AllButLast#all_but_last 0.1.0
+4. + lib/Thoran/Array/LastX/lastX.rb: Thoran::Array::LastX#last! 0.2.3
+5. + lib/Thoran/Module/AliasMethods/alias_methods.rb: Thoran::Module::AliasMethods#alias_methods 0.1.0
+
+
+## 20180209
+
+0.11.0: OSX::IfConfig 0.2.0: + OSX namespace, under the assumption that the output of ifconfig on OSX is different from other operating systems.
+
+0.10.0: IfConfig 0.1.0: String#captures required from the Thoran namespace.
+
+1. - require 'String/captures'
+2. + require 'Thoran/String/Captures/captures'
+3. - lib/String/captures.rb: String#captures 0.0.0
+
+0.9.2: OSX::Dmg 0.5.2: Moved Dmg.rb into the newly created OSX directory.
+
+0.9.1: OSX::HardwarePort 0.1.1: String#captures required from the Thoran namespace.
+
+1. - require 'String/captures'
+2. + require 'Thoran/String/Captures/captures'
+3. + lib/Thoran/String/Captures/captures.rb: Thoran::String::Captures#captures 0.3.0
+
+
+## 20161227
+
+0.9.0: OSX::HardwarePort 0.1.0: + name()
+
+0.8.1: OSX::HardwarePort 0.0.1: ~ parse(): An empty last line ends a port as a blank line does.
+
+0.8.0: OSX::HardwarePort 0.0.0: + OSX::HardwarePort: the hardware ports networksetup lists, each with its device and Ethernet address.
+
+0.7.0: IfConfig 0.0.0: + IfConfig: the interfaces ifconfig lists, and which of them are active.
+
+1. + lib/String/captures.rb: String#captures 0.0.0
+
+
+## 20140408
+
+0.6.1: OSX::Dmg 0.5.1: ~ path_to_dmg(), because it had a copy/paste error: /path_to_dmg/image_name/.
+
+
+## 20130624
+
+0.6.0: OSX::LaunchControl 0.0.0: + OSX::LaunchControl: loading and unloading launchd plists.
+
+
+## 20130623, 24
+
+0.5.0: OSX::Dmg 0.5.0: Aliases: attach, detach and filename.
+
+1. + alias_method :attach, :mount.
+2. + alias_method :detach, :unmount.
+3. + alias_method :filename, :path_to_dmg.
+4. + alias_method :filename=, :path_to_dmg=.
+
+0.4.0: OSX::Dmg 0.4.0: OSX::Dmg.install mounts, installs and unmounts in one go.
+
+1. + OSX::Dmg.install.
+2. + OSX::Dmg#run_installer, so as it does what OSX::Dmg#install used to do.
+3. ~ OSX::Dmg.install, so as it now mounts, installs, and ummounts.
+4. /dismount/unmount/.
+
+
+## 20130622
+
+0.3.0: OSX::Dmg 0.3.0: A path to the disk image rather than a URL.
+
+1. ~ OSX::Dmg#initialize, so as to remove url and to add path_to_dmg.
+2. require 'Array/extract_optionsX'.
+3. - OSX::Dmg#url, since something to handle disk images shouldn't know anything about URLs probably...
+4. ~ OSX::Dmg.mount: /disk_image_name/path_to_dmg/.
+5. ~ OSX::Dmg.install, so as the pkg_name argument can be optional, since on many occasions it can be derived happily from adding '.pkg' to the package name.
+6. ~ OSX::Dmg.install, so as the pwd is returned to the starting working directory.
+7. + OSX::Dmg#path_to_dmg (and aliases).
+8. + OSX::Dmg#path_to_dmg= (and aliases).
+9. - lib/Array/extract_optionsX.rb: Array#extract_optionsX 0.1.0
+10. + lib/Module/alias_methods.rb: Module#alias_methods 0.0.0
+
+0.2.0: OSX::Dmg 0.2.0: Instances which mount, install and dismount, the class methods renamed to match.
+
+1. + attr_accessor :verbose in class-level.
+2. ~ initialize, so that it actually does something!
+3. + OSX::Dmg#mount.
+4. + OSX::Dmg#install.
+5. + OSX::Dmg#dismount.
+6. + working self-run section.
+7. /mount_disk_image/mount/.
+8. /run_installer/install/.
+9. /dismount_disk_image/dismount/.
+10. ~ OSX::Dmg#image_name, so as it makes use of directly set values via options rather than derived from the url.
+11. ~ OSX::Dmg#package, so as it makes use of directly set values via options rather than derived from the url.
+12. ~ OSX::Dmg#pkg_name, so as it makes use of directly set values via options rather than derived from the url.
+
+
+## 20130603, 22
+
+0.1.0: OSX::Dmg 0.1.0: Shellwords for what is passed to the shell.
+
+1. + require 'shellwords'
+2. ~ OSX?::Dmg.mount_disk_image, so as to make use of Shellwords.
+3. ~ OSX?::Dmg.run_installer, so as to make use of Shellwords.
+4. ~ OSX?::Dmg.dismount_disk_image, so as to make use of Shellwords.
+5. + lib/Array/all_but_last.rb: Array#all_but_last 0.1.0
+6. + lib/Array/extract_optionsX.rb: Array#extract_optionsX 0.1.0
+7. + lib/Array/lastX.rb: Array#lastX 20060630
+
+0.0.0: OSX::Dmg 0.0.0: + OSX::Dmg: mounting a disk image, running the installer in it, and dismounting it.

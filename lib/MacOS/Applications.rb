@@ -1,9 +1,6 @@
 # MacOS/Applications.rb
 # MacOS::Applications
 
-# 20260605
-# 0.0.0
-
 # Description: Locates and detects installed .app application bundles across the system, local, and user
 # file-system domains, in the manner of `which` for command-line executables.
 

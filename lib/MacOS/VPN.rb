@@ -1,9 +1,6 @@
 # MacOS/VPN.rb
 # MacOS/VPN.rb
 
-# 20250925
-# 0.0.0
-
 # Notes:
 # 1. Taken from mercurial-0.4.3.
 

@@ -1,9 +1,6 @@
 # MacOS/Users.rb
 # MacOS::Users
 
-# 20260605
-# 0.0.0
-
 # Description: Lists the real (human) user accounts on the system, excluding system and service accounts.
 
 module MacOS

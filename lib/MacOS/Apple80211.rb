@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 # MacOS::Apple80211
 
-# 20210206
-# 0.0.0
-
 module MacOS
   class Apple80211
     class << self
