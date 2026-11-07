@@ -2,6 +2,12 @@
 
 ## 20261107
 
+0.49.7: ~ MacOS::SystemProfiler: Its aliases work on the module, and boot_mode gives the boot mode rather than the boot volume.
+
+1. ~ MacOS::SystemProfiler: + module_function for every alias, from boot_volume_string to time_since_boot. alias_method makes instance methods alone, so MacOS::SystemProfiler.computer_name and the rest raised a NoMethodError.
+2. ~ MacOS::SystemProfiler.boot_mode, .boot_mode_string: Aliases of boot_mode_data, in place of boot_volume_data.
+3. ~ MacOS::VERSION: /0.49.6/0.49.7/
+
 0.49.6: ~ MacOS::Keychain.wifi_password: nil where the keychain has no password for the network, rather than a NoMethodError.
 
 1. ~ MacOS::Keychain.wifi_password: stderr[/password: "(.+)"/, 1], in place of stderr.match(/password: "(.+)"/)[1], which called [] on nil when nothing matched.

@@ -71,8 +71,8 @@ module MacOS
     def boot_mode_data
       field('Boot Mode')
     end
-    alias_method :boot_mode_string, :boot_volume_data
-    alias_method :boot_mode, :boot_volume_data
+    alias_method :boot_mode_string, :boot_mode_data
+    alias_method :boot_mode, :boot_mode_data
 
     def computer_name_data
       field('Computer Name')
@@ -103,6 +103,17 @@ module MacOS
     end
     alias_method :time_since_boot_string, :time_since_boot_data
     alias_method :time_since_boot, :time_since_boot_data
+
+    # The aliases as module functions too, alias_method making instance methods alone.
+    module_function(
+      :boot_volume_string,
+      :boot_mode_string, :boot_mode,
+      :computer_name_string, :computer_name,
+      :username_string, :username,
+      :secure_virtual_memory_string, :secure_virtual_memory,
+      :system_integrity_protection_string, :system_integrity_protection,
+      :time_since_boot_string, :time_since_boot
+    )
 
   end
 end
