@@ -3,8 +3,6 @@
 
 # History: Extracted the methods from install_macports to be used in install_homebrew, but didn't finish this and just placed the methods (with some modification) directly into install_homebrew.
 
-require 'Array/all_but_last'
-require 'Module/alias_methods'
 require 'shellwords'
 
 module MacOS
@@ -62,8 +60,12 @@ module MacOS
       @package = package
     end
 
-    alias_methods :filename, :dmg_filename, :image_name, :disk_image_name
-    alias_methods :filename=, :dmg_filename=, :image_name=, :disk_image_name=
+    alias_method :filename, :disk_image_name
+    alias_method :dmg_filename, :disk_image_name
+    alias_method :image_name, :disk_image_name
+    alias_method :filename=, :disk_image_name=
+    alias_method :dmg_filename=, :disk_image_name=
+    alias_method :image_name=, :disk_image_name=
 
     def pkg_name
       @pkg_name || (@package + '.pkg')

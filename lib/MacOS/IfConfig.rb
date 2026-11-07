@@ -1,12 +1,6 @@
 # MacOS/IfConfig.rb
 # MacOS::IfConfig
 
-require 'Kernel/run'
-require 'Regexp/to_regexp'
-require 'String/to_regexp'
-require 'Thoran/String/Capture/capture'
-require 'Thoran/String/Captures/captures'
-
 module MacOS
   class IfConfig
     class << self
@@ -18,23 +12,23 @@ module MacOS
           if line =~ /^\t/
             case line
             when /ether/
-              ifconfig.mac_address = line.capture(/ *ether (.+?) ?$/)
+              ifconfig.mac_address = line[/ *ether (.+?) ?$/, 1]
             when /inet /
               if line.match(/broadcast/)
-                ifconfig.ipv4_address, ifconfig.netmask, ifconfig.broadcast_address = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+) broadcast (.+)$/)
+                ifconfig.ipv4_address, ifconfig.netmask, ifconfig.broadcast_address = line.match(/ *inet (\d+(?:\.\d+){3}) netmask (.+) broadcast (.+)$/)&.captures
               elsif line.match(/-->/)
-                ipv4_address_from, ipv4_address_to, ifconfig.netmask = line.captures(/inet (.+) --> (.+) netmask (.+)$/)
+                ipv4_address_from, ipv4_address_to, ifconfig.netmask = line.match(/inet (.+) --> (.+) netmask (.+)$/)&.captures
                 ifconfig.ipv4_address = ipv4_address_from
               else
-                ifconfig.ipv4_address, ifconfig.netmask = line.captures(/ *inet (\d+(?:\.\d+){3}) netmask (.+?) ?$/)
+                ifconfig.ipv4_address, ifconfig.netmask = line.match(/ *inet (\d+(?:\.\d+){3}) netmask (.+?) ?$/)&.captures
               end
             when /status\:/
-              ifconfig.status = line.capture(/ *status: (.+)$/)
+              ifconfig.status = line[/ *status: (.+)$/, 1]
             end
           else
             ifconfigs << ifconfig if ifconfig
             ifconfig = new
-            ifconfig.interface, rest_of_line = line.captures(/^(.+?): (.+)$/)
+            ifconfig.interface, rest_of_line = line.match(/^(.+?): (.+)$/)&.captures
             if rest_of_line =~ /flags=\w+<([^>]+)>/
               ifconfig.flags = $1.split(',')
             end
@@ -100,12 +94,12 @@ module MacOS
       end
 
       def all_matching(pattern)
-        pattern = pattern.to_regexp
+        pattern = Regexp.union(pattern)
         all.select{|ifconfig| ifconfig.name =~ pattern}
       end
 
       def bring_down_interface(interface_name)
-        run('sudo', 'ifconfig', interface_name, 'down')
+        system('sudo', 'ifconfig', interface_name, 'down', exception: true)
       end
 
       def bring_down_matching_interfaces(pattern)
@@ -117,7 +111,7 @@ module MacOS
       end
 
       def destroy_interface(interface_name)
-        run('sudo', 'ifconfig', interface_name, 'destroy')
+        system('sudo', 'ifconfig', interface_name, 'destroy', exception: true)
       end
 
       private

@@ -4,9 +4,7 @@
 # Description: Locates and detects installed .app application bundles across the system, local, and user
 # file-system domains, in the manner of `which` for command-line executables.
 
-require 'Kernel/run'
 require 'MacOS/Users'
-require 'Module/alias_methods'
 
 module MacOS
   module Applications
@@ -65,9 +63,11 @@ module MacOS
 
     def start(application_name)
       return unless path = path_for(application_name)
-      Kernel.run('open', path)
+      system('open', path, exception: true)
     end
-    alias_methods :launch, :open, :run, :start
+    alias_method :launch, :start
+    alias_method :open, :start
+    alias_method :run, :start
     module_function :launch, :open, :run
   end
 end

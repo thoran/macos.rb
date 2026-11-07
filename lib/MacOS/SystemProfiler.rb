@@ -4,8 +4,6 @@
 # Description: This uses the built-in system_profiler command on MacOS to get access to the version numbers on any
 # version of MacOS which has a system_profiler command and which returns results in a known format.
 
-require 'Ordinal/Array'
-require 'String/grep'
 require 'Version'
 
 module MacOS
@@ -17,13 +15,19 @@ module MacOS
       `system_profiler SPSoftwareDataType`.force_encoding('UTF-8')
     end
 
+    # The value system_profiler gives for a field, such as 'Boot Volume'.
+    def field(name)
+      system_profiler_output[/#{Regexp.escape(name)}: (?<value>.+)$/, :value]
+    end
+    private_class_method :field
+
     def system_version_data
-      system_profiler_output.grep(/System Version/).split(': ').last
+      field('System Version')
     end
 
     def system_version_string
-      earlier_versions = system_version_data.split.fourth # OSX 10.4 to 10.9 at least
-      later_versions = system_version_data.split.second # MacOS 10.14 at least
+      earlier_versions = system_version_data.split[3] # OSX 10.4 to 10.9 at least
+      later_versions = system_version_data.split[1] # MacOS 10.14 at least
       earlier_versions || later_versions
     end
 
@@ -44,7 +48,7 @@ module MacOS
     end
 
     def kernel_version_data
-      system_profiler_output.grep(/Kernel Version/).split(': ').last
+      field('Kernel Version')
     end
 
     def kernel_name
@@ -60,42 +64,42 @@ module MacOS
     end
 
     def boot_volume_data
-      system_profiler_output.grep(/Boot Volume/).split(': ').last
+      field('Boot Volume')
     end
     alias_method :boot_volume_string, :boot_volume_data
 
     def boot_mode_data
-      system_profiler_output.grep(/Boot Mode/).split(': ').last
+      field('Boot Mode')
     end
     alias_method :boot_mode_string, :boot_volume_data
     alias_method :boot_mode, :boot_volume_data
 
     def computer_name_data
-      system_profiler_output.grep(/Computer Name/).split(': ').last
+      field('Computer Name')
     end
     alias_method :computer_name_string, :computer_name_data
     alias_method :computer_name, :computer_name_data
 
     def username_data
-      system_profiler_output.grep(/User Name/).split(': ').last
+      field('User Name')
     end
     alias_method :username_string, :username_data
     alias_method :username, :username_data
 
     def secure_virtual_memory_data
-      system_profiler_output.grep(/Secure Virtual Memory/).split(': ').last
+      field('Secure Virtual Memory')
     end
     alias_method :secure_virtual_memory_string, :secure_virtual_memory_data
     alias_method :secure_virtual_memory, :secure_virtual_memory_data
 
     def system_integrity_protection_data
-      system_profiler_output.grep(/System Integrity Protection/).split(': ').last
+      field('System Integrity Protection')
     end
     alias_method :system_integrity_protection_string, :system_integrity_protection_data
     alias_method :system_integrity_protection, :system_integrity_protection_data
 
     def time_since_boot_data
-      system_profiler_output.grep(/Time since boot/).split(': ').last
+      field('Time since boot')
     end
     alias_method :time_since_boot_string, :time_since_boot_data
     alias_method :time_since_boot, :time_since_boot_data
