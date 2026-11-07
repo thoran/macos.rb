@@ -181,18 +181,3 @@ module MacOS
     end
   end
 end
-
-if __FILE__ == $0
-  require 'pp'
-  pp MacOS::IfConfig.interfaces
-  p MacOS::IfConfig.interface_names
-  p MacOS::IfConfig.active_interfaces
-  p MacOS::IfConfig.active_interfaces_names
-  p MacOS::IfConfig.inactive_interfaces
-  p MacOS::IfConfig.inactive_interfaces_names
-  p MacOS::IfConfig.up_interfaces
-  p MacOS::IfConfig.up_interfaces_names
-  p MacOS::IfConfig.mac_addresses
-  p MacOS::IfConfig.ipv4_addresses
-  p MacOS::IfConfig.find_by_interface('en0')
-end

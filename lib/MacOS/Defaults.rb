@@ -124,11 +124,3 @@ module MacOS
 
   end
 end
-
-if __FILE__ == $0
-  require 'pp'
-  defaults = MacOS::Defaults.new(domain: '-globalDomain')
-  defaults.export
-  pp defaults.to_h
-  pp defaults.to_yaml
-end

@@ -14,7 +14,3 @@ module MacOS
     end
   end
 end
-
-if __FILE__ == $0
-  p MacOS::Users.all
-end

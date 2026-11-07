@@ -107,22 +107,3 @@ module MacOS
     end
   end
 end
-
-if __FILE__ == $0
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.key_code(['cmd', 'alt', 'left']) == "@~\\UF702" ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.key_code(['CMD', 'ALT', 'LEFT']) == "@~\\UF702" ? '.' : 'x')
-
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_key_code_command_string("@~\\UF702", "Previous Tab") == "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Previous Tab' '@~\\UF702'" ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_key_code_command_strings("@~\\UF702", ["Previous Tab", "Select Previous Tab", "Show Previous Tab"]) == ["defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Previous Tab' '@~\\UF702'", "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Select Previous Tab' '@~\\UF702'", "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Show Previous Tab' '@~\\UF702'"] ? '.' : 'x')
-
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_key_code("@~\\UF702", "Previous Tab") == true ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_key_code("@~\\UF702", "Select Previous Tab") == true ? '.' : 'x')
-
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{cmd alt left}, "Previous Tab") == true ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{CMD ALT LEFT}, "Previous Tab") == true ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{cmd alt left}, ["Previous Tab", "Select Previous Tab", "Show Previous Tab"]) == true ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{CMD ALT LEFT}, ["Previous Tab", "Select Previous Tab", "Show Previous Tab"]) == true ? '.' : 'x')
-  print(MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_keys(%w{CMD D}, "Find Previous") == true ? '.' : 'x')
-
-  puts
-end

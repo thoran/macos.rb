@@ -38,8 +38,3 @@ module MacOS
 
   end
 end
-
-if __FILE__ == $0
-  p MacOS::Voice.list
-  p MacOS::Voice.random_voice
-end

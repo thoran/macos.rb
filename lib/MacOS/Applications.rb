@@ -71,7 +71,3 @@ module MacOS
     module_function :launch, :open, :run
   end
 end
-
-if __FILE__ == $0
-  p MacOS::Applications.installed?(ARGV[0])
-end

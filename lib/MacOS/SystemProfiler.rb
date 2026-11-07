@@ -117,9 +117,3 @@ module MacOS
 
   end
 end
-
-if __FILE__ == $0
-  MacOS::SystemProfiler.methods(false).sort.each do |methd|
-    p "#{methd}: #{MacOS::SystemProfiler.send(methd)}"
-  end
-end

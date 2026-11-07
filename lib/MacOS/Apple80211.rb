@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# MacOS/Apple80211.rb
 # MacOS::Apple80211
 
 module MacOS
@@ -65,11 +65,4 @@ module MacOS
 
     end # class << self
   end
-end
-
-if __FILE__ == $0
-  p MacOS::Apple80211.attributes
-  p MacOS::Apple80211.channel
-  p MacOS::Apple80211.ssid
-  p MacOS::Apple80211.link_auth
 end

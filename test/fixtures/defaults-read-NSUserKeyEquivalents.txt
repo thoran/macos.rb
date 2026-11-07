@@ -1,0 +1,4 @@
+{
+    "Find Previous" = "@$d";
+    "Previous Tab" = "@~\\UF702";
+}
