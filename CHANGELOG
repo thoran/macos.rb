@@ -2,6 +2,25 @@
 
 ## 20261107
 
+0.49.3: Core Ruby in place of the extension libraries other than Version, each of which patched a core class of any program loading macos.rb.
+
+1. ~ MacOS::Applications.start: system('open', path, exception: true), in place of Kernel.run.
+2. ~ MacOS::Applications: alias_method for launch, open and run, in place of alias_methods; - require 'Kernel/run', 'Module/alias_methods'.
+3. ~ MacOS::Dmg: alias_method for filename, dmg_filename and image_name, and their writers, in place of alias_methods; - require 'Array/all_but_last', which nothing used, and 'Module/alias_methods'.
+4. ~ MacOS::HardwarePort.parse: line.match(...)&.captures, in place of line.captures(...); - require 'Thoran/String/Captures/captures'.
+5. ~ MacOS::IfConfig.parse: line[..., 1] and line.match(...)&.captures, in place of line.capture and line.captures.
+6. ~ MacOS::IfConfig.all_matching: Regexp.union(pattern), in place of pattern.to_regexp; a String is still matched literally.
+7. ~ MacOS::IfConfig.bring_down_interface, .destroy_interface: system(..., exception: true), in place of run.
+8. ~ lib/MacOS/IfConfig.rb: - require 'Kernel/run', 'Regexp/to_regexp', 'String/to_regexp', 'Thoran/String/Capture/capture', 'Thoran/String/Captures/captures'.
+9. ~ MacOS::SystemProfiler: + .field, private, giving a field's value with system_profiler_output[/<name>: (?<value>.+)$/, :value], in place of grep and split in each of the nine; split[1] and split[3], in place of second and fourth; - require 'Ordinal/Array', 'String/grep'.
+10. ~ MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.read_keys: plist_dict.lines.grep(/=/), in place of String#grep; - require 'String/grep'.
+11. - lib/Kernel/run.rb: Kernel#run 0.3.1
+12. - lib/Regexp/to_regexp.rb: Regexp#to_regexp 0.0.0
+13. - lib/String/grep.rb: String#grep 0.2.0
+14. - lib/String/to_regexp.rb: String#to_regexp 0.3.0
+15. - lib/Thoran/String/Captures/captures.rb: Thoran::String::Captures#captures 0.3.0
+16. ~ MacOS::VERSION: /0.49.2/0.49.3/
+
 0.49.2: ~ MacOS::USBFlashDrive.all_mount_points: Every mount point, rather than the first.
 
 1. ~ MacOS::USBFlashDrive.all_mount_points: stdout.scan(/Mount Point: (.+)$/).flatten, in place of stdout.captures(/Mount Point: (.+)$/), which gives the groups of the first match only.

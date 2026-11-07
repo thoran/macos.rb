@@ -1,8 +1,6 @@
 # MacOS/HardwarePort.rb
 # MacOS::HardwarePort
 
-require 'Thoran/String/Captures/captures'
-
 module MacOS
   class HardwarePort
 
@@ -18,7 +16,7 @@ module MacOS
             hardware_ports << hardware_port if hardware_port
             hardware_port = new
           else
-            label, value = line.captures(/^(.+): (.+)/)
+            label, value = line.match(/^(.+): (.+)/)&.captures
             case label
             when 'Hardware Port'; hardware_port.hardware_port = value
             when 'Device'; hardware_port.device = value

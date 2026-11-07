@@ -1,8 +1,6 @@
 # MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents.rb
 # MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents
 
-require 'String/grep'
-
 module MacOS
   class Defaults
     module NSGlobalDomain
@@ -69,7 +67,7 @@ module MacOS
           def read_keys
             return_value = []
             plist_dict = `defaults read .GlobalPreferences NSUserKeyEquivalents -`
-            menu_item_to_keys_map = plist_dict.grep(/=/).split("\n").map{|e| e.split('=')}.map{|k,v| [k.strip, v.strip]}.map{|k,v| [k.tr('"',''), v.tr('"','')]}
+            menu_item_to_keys_map = plist_dict.lines.grep(/=/).map{|e| e.split('=')}.map{|k,v| [k.strip, v.strip]}.map{|k,v| [k.tr('"',''), v.tr('"','')]}
             menu_item_to_keys_map.each do |shortcut|
               menu_item, key_code = shortcut.first, shortcut.last
               md = key_code.match(/([\@~\^\$]+)(.+);/)
