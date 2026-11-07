@@ -1,13 +1,11 @@
 # Kernel/run.rb
 # Kernel#run
 
-# 20260301
-# 0.3.0
+# 20261025
+# 0.3.1
 
-# Changes since 0.2:
-# -/0: + Allow capture of output from issued command.
-# 1. + capture: keyword argument to return command output instead of success boolean.
-# 2. Check for capture being true and issue wtih backticks instead of using system().
+# Changes since 0.3.0:
+# 1. ~ Kernel#run: capture: issues the command with IO.popen rather than backticks, so as several arguments reach the command as given, as they do without capture:, rather than being joined into a shell string; a single string is still run by the shell.
 
 module Kernel
 
@@ -21,7 +19,7 @@ module Kernel
     end
     unless dry_run
       if capture
-        output = `#{command.join(' ')}`.strip
+        output = IO.popen(command.size == 1 ? command.first : command, &:read).strip
         if !$?.success? && raise_on_failure
           raise "#{command.inspect} failed with exit code #{$?.exitstatus}."
         end
