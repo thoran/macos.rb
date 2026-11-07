@@ -2,6 +2,7 @@
 # MacOS::Defaults::ComAppleDock
 
 require 'plist'
+require 'yaml'
 
 module MacOS
   class Defaults

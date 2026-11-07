@@ -1,6 +1,9 @@
 # MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents.rb
 # MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents
 
+require 'set'
+require 'yaml'
+
 module MacOS
   class Defaults
     module NSGlobalDomain
