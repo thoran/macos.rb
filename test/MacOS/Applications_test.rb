@@ -72,9 +72,14 @@ describe MacOS::Applications do
       end
     end
 
-    it "does nothing for an application which isn't installed" do
+    it "raises for an application which isn't installed, by each of its names, opening nothing" do
       with_paths do
-        commands = commands_run_by(MacOS::Applications){_(MacOS::Applications.start('Nowhere')).must_be_nil}
+        commands = commands_run_by(MacOS::Applications) do
+          %i{start launch open run}.each do |method|
+            error = _{MacOS::Applications.send(method, 'Nowhere')}.must_raise(RuntimeError)
+            _(error.message).must_equal('Application: Nowhere was not found.')
+          end
+        end
         _(commands).must_equal([])
       end
     end

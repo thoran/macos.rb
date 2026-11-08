@@ -62,7 +62,7 @@ module MacOS
     end
 
     def start(application_name)
-      return unless path = path_for(application_name)
+      raise "Application: #{application_name} was not found." unless path = path_for(application_name)
       system('open', path, exception: true)
     end
     alias_method :launch, :start
