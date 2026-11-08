@@ -50,7 +50,7 @@ describe MacOS::Defaults::ComAppleDock do
   describe "reading" do
     it "reads the persistent apps back as paths, a user's own with ~ for their home" do
       with_dock do
-        _(dock.read('persistent-apps')).must_equal('persistent-apps' => ['/System/Applications/Mail.app/', '~/Applications/Example App.app'])
+        _(dock.read('persistent-apps')).must_equal({'persistent-apps' => ['/System/Applications/Mail.app/', '~/Applications/Example App.app']})
       end
     end
 
@@ -63,9 +63,9 @@ describe MacOS::Defaults::ComAppleDock do
 
     it "reads booleans as yes and no, and other attributes as they are" do
       with_dock do
-        _(dock.read('autohide', 'magnification', 'tilesize', 'orientation')).must_equal(
+        _(dock.read('autohide', 'magnification', 'tilesize', 'orientation')).must_equal({
           'autohide' => 'yes', 'magnification' => 'no', 'tilesize' => 48, 'orientation' => 'bottom'
-        )
+        })
       end
     end
 

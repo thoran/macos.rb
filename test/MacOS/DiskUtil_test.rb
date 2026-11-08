@@ -19,7 +19,7 @@ describe MacOS::DiskUtil do
 
     it "gives each partition's device, mount point, name and size" do
       with_disks do
-        _(MacOS::DiskUtil.volumes.last).must_equal(device_id: 'disk4s1', mount_point: '/Volumes/EXAMPLE', name: 'EXAMPLE', size: 32006733824)
+        _(MacOS::DiskUtil.volumes.last).must_equal({device_id: 'disk4s1', mount_point: '/Volumes/EXAMPLE', name: 'EXAMPLE', size: 32006733824})
         _(MacOS::DiskUtil.volumes.map{|volume| volume[:device_id]}).must_equal(%w{disk0s1 disk0s2 disk4s1})
       end
     end

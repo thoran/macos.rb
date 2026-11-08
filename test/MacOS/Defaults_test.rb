@@ -150,7 +150,7 @@ describe MacOS::Defaults do
       plist = CFPropertyList::List.new
       plist.value = CFPropertyList.guess('autohide' => true, 'tilesize' => 48)
       plist.save(path, CFPropertyList::List::FORMAT_XML)
-      _(MacOS::Defaults.new(domain: domain).to_h).must_equal('autohide' => true, 'tilesize' => 48)
+      _(MacOS::Defaults.new(domain: domain).to_h).must_equal({'autohide' => true, 'tilesize' => 48})
     ensure
       File.delete(path) if path && File.exist?(path)
     end
