@@ -41,7 +41,7 @@ module MacOS
                 <key>file-data</key>
                 <dict>
                   <key>_CFURLString</key>
-                  <string>#{urlified_app_string}</string>
+                  <string>#{urlified_app_string.encode(xml: :text)}</string>
                   <key>_CFURLStringType</key>
                   <integer>15</integer>
                 </dict>

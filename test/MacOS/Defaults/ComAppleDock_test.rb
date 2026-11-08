@@ -40,6 +40,11 @@ describe MacOS::Defaults::ComAppleDock do
       _(dock.urlified_app_string('/Applications/Example.app')).must_equal('file:///Applications/Example.app')
       _(dock.app_plist_data('file:///Applications/Example.app')).must_include('<string>file:///Applications/Example.app</string>')
     end
+
+    it "is well-formed XML whatever the app's path holds" do
+      tile = Plist.parse_xml(dock.app_plist_data('file:///Applications/Tom & Jerry <Example>.app'))
+      _(tile['tile-data']['file-data']['_CFURLString']).must_equal('file:///Applications/Tom & Jerry <Example>.app')
+    end
   end
 
   describe "reading" do
