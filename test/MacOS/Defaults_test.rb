@@ -56,6 +56,20 @@ describe MacOS::Defaults do
       _(commands).must_equal(['defaults export com.apple.dock /tmp/com.apple.dock.plist'])
     end
 
+    it "exports and imports a domain whose name the shell would otherwise break up" do
+      commands = []
+      MacOS::Defaults.stub(:domains, ["com.example.it's here"]) do
+        defaults = MacOS::Defaults.new(domain: "com.example.it's here")
+        File.stub(:exist?, true) do
+          defaults.stub(:`, ->(command){commands << command; ''}){defaults.export; defaults.import}
+        end
+      end
+      _(commands.map{|command| Shellwords.split(command)}).must_equal([
+        ['defaults', 'export', "com.example.it's here", "/tmp/com.example.it's here.plist"],
+        ['defaults', 'import', "com.example.it's here", "/tmp/com.example.it's here.plist"],
+      ])
+    end
+
     it "won't export a domain defaults doesn't know" do
       MacOS::Defaults.stub(:domains, []) do
         _{MacOS::Defaults.new(domain: 'com.example.nowhere').export}.must_raise(RuntimeError)

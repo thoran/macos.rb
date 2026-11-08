@@ -11,7 +11,7 @@ describe MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents do
       _(keys.key_code(:ctrl, :shift, :right)).must_equal('^$\\UF703')
     end
 
-    it "keeps a letter as itself" do
+    it "takes a letter in either case, as it does the modifiers" do
       _(keys.key_code(%w{cmd D})).must_equal('@d')
     end
 
@@ -27,10 +27,11 @@ describe MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents do
   end
 
   describe "assigning keys" do
-    it "makes a defaults write command for each menu item" do
-      _(keys.assign_key_code_command_strings('@~\\UF702', ['Previous Tab', 'Show Previous Tab'])).must_equal([
-        "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Previous Tab' '@~\\UF702'",
-        "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Show Previous Tab' '@~\\UF702'",
+    it "makes a defaults write command for each menu item, each name and the key code one argument" do
+      commands = keys.assign_key_code_command_strings('@~\\UF702', ['Previous Tab', "Example's Tab"])
+      _(commands.map{|command| Shellwords.split(command)}).must_equal([
+        ['defaults', 'write', 'NSGlobalDomain', 'NSUserKeyEquivalents', '-dict-add', 'Previous Tab', '@~\\UF702'],
+        ['defaults', 'write', 'NSGlobalDomain', 'NSUserKeyEquivalents', '-dict-add', "Example's Tab", '@~\\UF702'],
       ])
     end
 
@@ -38,7 +39,9 @@ describe MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents do
       result = nil
       commands = commands_run_by(keys){result = keys.assign_keys(%w{cmd alt left}, 'Previous Tab')}
       _(result).must_equal(true)
-      _(commands).must_equal([["defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add 'Previous Tab' '@~\\UF702'"]])
+      _(commands.map{|command| Shellwords.split(command.first)}).must_equal([
+        ['defaults', 'write', 'NSGlobalDomain', 'NSUserKeyEquivalents', '-dict-add', 'Previous Tab', '@~\\UF702'],
+      ])
     end
 
     it "loads several shortcuts at once" do
