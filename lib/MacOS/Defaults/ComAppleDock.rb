@@ -112,12 +112,13 @@ module MacOS
           end
         end
 
-        def peristent_app_paths(plist)
+        def persistent_app_paths(plist)
           plist['persistent-apps'].map do |persistent_app|
             file_url = persistent_app['tile-data']['file-data']['_CFURLString']
             file_url.sub(/file:\/\//, '').gsub(/%20/, ' ').sub(/\/Users\/.+?(\/.+)\//, '~\1')
           end
         end
+        alias_method :peristent_app_paths, :persistent_app_paths
 
         def boolean_to_yes_no(boolean_string)
           case boolean_string
@@ -133,7 +134,7 @@ module MacOS
           attribute_list.each do |attribute|
             next if %w{persistent-others recent-apps}.include?(attribute)
             if attribute == 'persistent-apps'
-              return_value[attribute] = peristent_app_paths(plist)
+              return_value[attribute] = persistent_app_paths(plist)
             elsif BOOLEAN_ATTRIBUTES.include?(attribute)
               return_value[attribute] = boolean_to_yes_no(plist[attribute])
             else

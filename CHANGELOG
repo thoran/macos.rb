@@ -1,5 +1,15 @@
 # macos.rb/CHANGELOG
 
+## 20261108
+
+0.50.1: ~ MacOS::Defaults::ComAppleDock: /peristent_app_paths/persistent_app_paths/, the misspelt name kept as an alias.
+
+1. /MacOS::Defaults::ComAppleDock.peristent_app_paths/MacOS::Defaults::ComAppleDock.persistent_app_paths/
+2. + MacOS::Defaults::ComAppleDock.peristent_app_paths, an alias of persistent_app_paths, so as callers of 0.50.0's name go on working.
+3. ~ MacOS::Defaults::ComAppleDock.read: calls persistent_app_paths.
+4. + test/MacOS/Defaults/ComAppleDock_test.rb: both names give the persistent apps' paths.
+5. ~ MacOS::VERSION: /0.50.0/0.50.1/
+
 ## 20261107
 
 0.50.0: The first release as a gem: + gemspec, tests in place of each library's self-run section, README, TODO and ROADMAP.md.

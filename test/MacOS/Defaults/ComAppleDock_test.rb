@@ -42,6 +42,13 @@ describe MacOS::Defaults::ComAppleDock do
       end
     end
 
+    it "gives the persistent apps' paths as persistent_app_paths, and as peristent_app_paths still" do
+      plist = Plist.parse_xml(fixture('defaults-export-com.apple.dock.xml'))
+      paths = ['/System/Applications/Mail.app/', '~/Applications/Example App.app']
+      _(dock.persistent_app_paths(plist)).must_equal(paths)
+      _(dock.peristent_app_paths(plist)).must_equal(paths)
+    end
+
     it "reads booleans as yes and no, and other attributes as they are" do
       with_dock do
         _(dock.read('autohide', 'magnification', 'tilesize', 'orientation')).must_equal(
