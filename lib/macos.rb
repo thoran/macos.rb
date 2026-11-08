@@ -1,4 +1,5 @@
-# MacOS.rb
+# macos.rb
+# MacOS
 
 require 'MacOS/Apple80211'
 require 'MacOS/Applications'

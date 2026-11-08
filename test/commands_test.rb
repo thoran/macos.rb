@@ -1,6 +1,6 @@
 require_relative './helper'
 require 'open3'
-require 'MacOS'
+require 'macos'
 
 # The command each library sends, caught before it reaches the shell, so as none runs.
 describe "the commands" do

@@ -119,7 +119,6 @@ module MacOS
             file_url.sub(/file:\/\//, '').gsub(/%20/, ' ').sub(/\/Users\/.+?(\/.+)\//, '~\1')
           end
         end
-        alias_method :peristent_app_paths, :persistent_app_paths
 
         def boolean_to_yes_no(boolean_string)
           case boolean_string
