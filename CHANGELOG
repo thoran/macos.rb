@@ -2,6 +2,12 @@
 
 ## 20261108
 
+0.50.4: ~ MacOS::Defaults::ComAppleDock: An app's path is escaped for XML in its tile.
+
+1. ~ MacOS::Defaults::ComAppleDock.app_plist_data: The file URL is escaped for XML, rather than put in as it is, which for a path with & or < gave a tile defaults couldn't parse, and so no app in the Dock.
+2. ~ test/MacOS/Defaults/ComAppleDock_test.rb: A path with & and < gives a tile which parses back to it.
+3. ~ MacOS::VERSION: /0.50.3/0.50.4/
+
 0.50.3: ~ MacOS::Defaults: The values in its commands are escaped for the shell.
 
 1. ~ MacOS::Defaults#export, #import: The domain and the plist's path are escaped.
