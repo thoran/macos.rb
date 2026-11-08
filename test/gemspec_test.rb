@@ -33,7 +33,7 @@ describe 'macos.rb.gemspec' do
   it "ships the gemspec which names it, its Rakefile, and every library" do
     _(spec.files).must_include('macos.rb.gemspec')
     _(spec.files).must_include('Rakefile')
-    _(spec.files).must_include('lib/MacOS.rb')
+    _(spec.files).must_include('lib/macos.rb')
     _(spec.files).must_include('lib/Version.rb')
   end
 

@@ -2,6 +2,16 @@
 
 ## 20261109
 
+0.51.0: lib/MacOS.rb --> lib/macos.rb; ~ README.md: A code block per class.
+
+1. lib/MacOS.rb --> lib/macos.rb: The load file is named after the gem, as require 'macos' asks, a capitalised one being found only on a case-insensitive filesystem.
+2. - MacOS::Defaults::ComAppleDock.peristent_app_paths, the misspelt alias 0.50.1 kept.
+3. ~ README.md: + Description, with a list of the classes, each linked to its block; the Installation commands indented; Usage opening with require 'macos', then a block per class under a heading of its own, each opening with the class's own require, which needs nothing before it, and each call's result on the line after it; the notes on Apple80211 and on sudo as comments beside the calls they concern; the fork link in angle brackets, so as no renderer takes the closing parenthesis into it; License: a link to LICENSE.
+4. ~ test/MacOS_test.rb: The load file is found as lowercase on a case-sensitive filesystem too, and is required as 'macos'.
+5. ~ test/commands_test.rb, test/gemspec_test.rb: Each names lib/macos.rb in place of lib/MacOS.rb.
+6. ~ test/MacOS/Defaults/ComAppleDock_test.rb: The persistent apps' paths are read by persistent_app_paths alone.
+7. ~ MacOS::VERSION: /0.50.7/0.51.0/
+
 0.50.7: + MacOS::SystemProfiler.user_name, .boot_volume
 
 1. + MacOS::SystemProfiler.user_name, an alias of username_data, named as system_profiler names the field.
