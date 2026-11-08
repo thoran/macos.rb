@@ -2,6 +2,15 @@
 
 ## 20261108
 
+0.50.6: ~ MacOS::Applications, MacOS::LaunchControl: They raise where there is nothing to act on.
+
+1. ~ MacOS::Applications.start, .launch, .open, .run: Each raises where the application isn't installed, rather than returning nil having opened nothing.
+2. ~ MacOS::LaunchControl.load, .unload: Each raises where it's given no plist, or one which isn't there, rather than running launchctl upon it.
+3. + MacOS::LaunchControl.check_plist, private.
+4. ~ test/MacOS/Applications_test.rb: An application which isn't installed raises, by each of start's names.
+5. ~ test/MacOS/LaunchControl_test.rb: A plist which isn't there, or isn't given, raises, for the class and for an instance.
+6. ~ MacOS::VERSION: /0.50.5/0.50.6/
+
 0.50.5: ~ test/: The tests pass under minitest 6.1.
 
 1. ~ test/MacOS/Defaults_test.rb, test/MacOS/DiskUtil_test.rb, test/MacOS/Defaults/ComAppleDock_test.rb: Each Hash given to must_equal is in braces, minitest 6.1 taking one without them as keywords, and so expecting nil.

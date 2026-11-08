@@ -9,11 +9,20 @@ module MacOS
     class << self
 
       def load(path_to_plist)
+        check_plist(path_to_plist)
         system("launchctl load -w #{Shellwords.escape(path_to_plist)}")
       end
 
       def unload(path_to_plist)
+        check_plist(path_to_plist)
         system("launchctl unload -w #{Shellwords.escape(path_to_plist)}")
+      end
+
+      private
+
+      def check_plist(path_to_plist)
+        raise "No plist was given." unless path_to_plist
+        raise "File: #{path_to_plist} was not found in the filesystem." unless File.exist?(path_to_plist)
       end
 
     end # class << self
