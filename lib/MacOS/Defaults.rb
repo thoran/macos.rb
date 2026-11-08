@@ -11,6 +11,7 @@
 
 
 require 'cfpropertylist'
+require 'shellwords'
 require 'yaml'
 
 module MacOS
@@ -60,7 +61,7 @@ module MacOS
 
     def export
       if domain_valid?
-        `defaults export #{@domain} #{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist`
+        `defaults export #{Shellwords.escape(@domain)} #{Shellwords.escape("#{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist")}`
       else
         raise "Domain: #{@domain} was not found in the defaults database."
       end
@@ -69,7 +70,7 @@ module MacOS
 
     def import
       if File.exist?("#{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist")
-        `defaults import #{@domain} #{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist`
+        `defaults import #{Shellwords.escape(@domain)} #{Shellwords.escape("#{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist")}`
       else
         raise "File: #{DEFAULT_PLIST_DIRECTORY}/#{@domain}.plist was not found in the filesystem."
       end

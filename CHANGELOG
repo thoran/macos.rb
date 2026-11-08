@@ -2,6 +2,15 @@
 
 ## 20261108
 
+0.50.3: ~ MacOS::Defaults: The values in its commands are escaped for the shell.
+
+1. ~ MacOS::Defaults#export, #import: The domain and the plist's path are escaped.
+2. ~ MacOS::Defaults::ComAppleDock.persistent_app_write_command, .delete_item, .attribute_write_command: Each value is escaped, rather than put in single quotes or left bare, which an apostrophe or a space broke.
+3. ~ MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents.assign_key_code_command_string: The menu item and key code are escaped, rather than put in single quotes.
+4. ~ test/MacOS/Defaults_test.rb, test/MacOS/Defaults/ComAppleDock_test.rb, test/MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents_test.rb: Each command is split as the shell would split it, apostrophes included.
+5. ~ test/MacOS/Defaults/NSGlobalDomain/NSUserKeyEquivalents_test.rb: The letter test is retitled to say a letter is taken in either case.
+6. ~ MacOS::VERSION: /0.50.2/0.50.3/
+
 0.50.2: ~ MacOS::Dmg: It guesses the mount point and package name better.
 
 1. ~ MacOS::Dmg#mount_point: The guess is the image's name less .dmg, rather than up to its first dot, and comes from path_to_dmg where there's no disk_image_name, rather than raising.

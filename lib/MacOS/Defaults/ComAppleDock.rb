@@ -2,6 +2,7 @@
 # MacOS::Defaults::ComAppleDock
 
 require 'plist'
+require 'shellwords'
 require 'yaml'
 
 module MacOS
@@ -54,7 +55,7 @@ module MacOS
         end
 
         def persistent_app_write_command(app_plist_data)
-          "defaults write com.apple.dock persistent-apps -array-add '#{app_plist_data}'"
+          "defaults write com.apple.dock persistent-apps -array-add #{Shellwords.escape(app_plist_data)}"
         end
 
         def add_persistent_app(persistent_app_path)
@@ -82,20 +83,20 @@ module MacOS
         end
 
         def delete_item(scope)
-          system("defaults delete com.apple.dock #{scope}")
+          system("defaults delete com.apple.dock #{Shellwords.escape(scope)}")
         end
 
         def attribute_write_command(attr, value)
           value = (
             if BOOLEAN_ATTRIBUTES.include?(attr) # Without adding -bool it doesn't work.
-              "-bool #{value}"
+              "-bool #{Shellwords.escape(value)}"
             elsif INTEGER_ATTRIBUTES.include?(attr) # Adding -int isn't strictly necessary for it to work, but is correct syntax.
-              "-int #{value}"
+              "-int #{Shellwords.escape(value)}"
             else
-              value
+              Shellwords.escape(value)
             end
           )
-          "defaults write com.apple.dock #{attr} #{value}"
+          "defaults write com.apple.dock #{Shellwords.escape(attr)} #{value}"
         end
 
         def load_attribute(attr, value)

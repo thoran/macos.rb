@@ -2,6 +2,7 @@
 # MacOS::Defaults::NSGlobalDomain::NSUserKeyEquivalents
 
 require 'set'
+require 'shellwords'
 require 'yaml'
 
 module MacOS
@@ -33,7 +34,7 @@ module MacOS
           end
 
           def assign_key_code_command_string(key_code, menu_item)
-            "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add '#{menu_item}' '#{key_code}'"
+            "defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add #{Shellwords.escape(menu_item)} #{Shellwords.escape(key_code)}"
           end
 
           def assign_key_code_command_strings(key_code, menu_item_or_items)

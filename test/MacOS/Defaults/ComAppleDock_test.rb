@@ -15,10 +15,17 @@ describe MacOS::Defaults::ComAppleDock do
       _(dock.attribute_write_command('orientation', 'left')).must_equal('defaults write com.apple.dock orientation left')
     end
 
+    it "writes a value the shell would otherwise break up as one argument" do
+      _(Shellwords.split(dock.attribute_write_command('orientation', "it's left"))).must_equal(['defaults', 'write', 'com.apple.dock', 'orientation', "it's left"])
+    end
+
     it "loads a configuration, adding each persistent app and writing each other attribute" do
-      commands = commands_run_by(dock){dock.load('persistent-apps' => ['/Applications/Example.app'], 'autohide' => true)}
+      commands = commands_run_by(dock){dock.load('persistent-apps' => ["/Applications/Example's App.app"], 'autohide' => true)}
       _(commands.size).must_equal(2)
-      _(commands.first.first).must_match(%r{\Adefaults write com\.apple\.dock persistent-apps -array-add '<dict>.*file:///Applications/Example\.app}m)
+      arguments = Shellwords.split(commands.first.first)
+      _(arguments.take(5)).must_equal(%w{defaults write com.apple.dock persistent-apps -array-add})
+      _(arguments.size).must_equal(6)
+      _(arguments.last).must_include("<string>file:///Applications/Example's App.app</string>")
       _(commands.last).must_equal(['defaults write com.apple.dock autohide -bool true'])
     end
 
