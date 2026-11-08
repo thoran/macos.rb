@@ -2,6 +2,14 @@
 
 ## 20261108
 
+0.50.2: ~ MacOS::Dmg: It guesses the mount point and package name better.
+
+1. ~ MacOS::Dmg#mount_point: The guess is the image's name less .dmg, rather than up to its first dot, and comes from path_to_dmg where there's no disk_image_name, rather than raising.
+2. ~ MacOS::Dmg#pkg_name: The guess is the mount point plus .pkg where there's no package, rather than raising.
+3. ~ MacOS::Dmg.install: Its disk_image_name: is optional.
+4. ~ test/MacOS/Dmg_test.rb: The guesses are tested.
+5. ~ MacOS::VERSION: /0.50.1/0.50.2/
+
 0.50.1: ~ MacOS::Defaults::ComAppleDock: /peristent_app_paths/persistent_app_paths/, the misspelt name kept as an alias.
 
 1. /MacOS::Defaults::ComAppleDock.peristent_app_paths/MacOS::Defaults::ComAppleDock.persistent_app_paths/
