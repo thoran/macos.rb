@@ -25,8 +25,13 @@ describe MacOS::Dmg do
       _(commands).must_equal([
         ['hdiutil attach /tmp/Example-1.0.dmg'],
         ["sudo installer -pkg Example.pkg -target '/'"],
-        ['hdiutil detach -Force /Volumes/Example-1'],
+        ['hdiutil detach -Force /Volumes/Example-1.0'],
       ])
+    end
+
+    it "installs from a disk image it's given only the path of" do
+      commands = run_quietly{MacOS::Dmg.install(path_to_dmg: '/tmp/Example-1.0.dmg', package: 'Example')}
+      _(commands.last).must_equal(['hdiutil detach -Force /Volumes/Example-1.0'])
     end
 
     it "prints each command where verbose" do
@@ -42,7 +47,21 @@ describe MacOS::Dmg do
 
     it "takes its package's name and its mount point from its other names, where they aren't given" do
       _(dmg.pkg_name).must_equal('Example.pkg')
-      _(dmg.mount_point).must_equal('Example-1')
+      _(dmg.mount_point).must_equal('Example-1.0')
+    end
+
+    it "guesses its mount point from its disk image's path where it has no disk image name" do
+      _(MacOS::Dmg.new(path_to_dmg: '/tmp/Example-1.0.dmg').mount_point).must_equal('Example-1.0')
+    end
+
+    it "guesses its mount point from a name ending in .DMG, or with no .dmg at all" do
+      _(MacOS::Dmg.new(path_to_dmg: '/tmp/EXAMPLE.DMG').mount_point).must_equal('EXAMPLE')
+      _(MacOS::Dmg.new(path_to_dmg: '/tmp/Example').mount_point).must_equal('Example')
+    end
+
+    it "guesses its package's name from its mount point where it has no package" do
+      _(MacOS::Dmg.new(path_to_dmg: '/tmp/Example-1.0.dmg').pkg_name).must_equal('Example-1.0.pkg')
+      _(MacOS::Dmg.new(path_to_dmg: '/tmp/Example-1.0.dmg', mount_point: 'Example').pkg_name).must_equal('Example.pkg')
     end
 
     it "takes them as given" do
@@ -62,7 +81,7 @@ describe MacOS::Dmg do
       _(commands).must_equal([
         ['hdiutil attach /tmp/Example-1.0.dmg'],
         ["sudo installer -pkg Example.pkg -target '/'"],
-        ['hdiutil detach -Force /Volumes/Example-1'],
+        ['hdiutil detach -Force /Volumes/Example-1.0'],
       ])
     end
   end

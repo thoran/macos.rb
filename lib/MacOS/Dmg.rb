@@ -32,7 +32,7 @@ module MacOS
       end
       alias_method :detach, :unmount
 
-      def install(path_to_dmg:, disk_image_name:, mount_point: nil, package: nil)
+      def install(path_to_dmg:, disk_image_name: nil, mount_point: nil, package: nil)
         dmg = new(path_to_dmg: path_to_dmg, disk_image_name: disk_image_name, mount_point: mount_point, package: package)
         dmg.mount
         dmg.run_installer
@@ -67,12 +67,14 @@ module MacOS
     alias_method :dmg_filename=, :disk_image_name=
     alias_method :image_name=, :disk_image_name=
 
+    # Where neither it nor the package is given, a guess: the mount point's name with .pkg, as a package is often named.
     def pkg_name
-      @pkg_name || (@package + '.pkg')
+      @pkg_name || "#{@package || mount_point}.pkg"
     end
 
+    # Where it's not given, a guess: the disk image's name without .dmg, as a volume is often named.
     def mount_point
-      @mount_point || @disk_image_name.split('.').first
+      @mount_point || File.basename(@disk_image_name || @path_to_dmg).sub(/\.dmg\z/i, '')
     end
 
     def mount
