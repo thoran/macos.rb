@@ -162,11 +162,14 @@ MacOS::DiskUtil.free_bytes_for_device_id('disk4s1')
 ```ruby
 require 'MacOS/Dmg'
 
-dmg = MacOS::Dmg.new(path_to_dmg: 'Example.dmg', disk_image_name: 'Example.dmg', package: 'Example')
-# => #<MacOS::Dmg @path_to_dmg="Example.dmg", @disk_image_name="Example.dmg", @mount_point=nil, @package="Example">
+dmg = MacOS::Dmg.new(path_to_dmg: 'Example.dmg')
+# => #<MacOS::Dmg @path_to_dmg="Example.dmg", @mount_point=nil, @package=nil>
 
-dmg.install # mounts it, installs Example.pkg with sudo installer, and unmounts it
+dmg.install # mounts it, installs the one package on it with sudo installer, and unmounts it
 # => true
+
+dmg.mount_point # where hdiutil mounted the volume
+# => "/Volumes/Example"
 ```
 
 ### MacOS::HardwarePort
