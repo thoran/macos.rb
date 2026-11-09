@@ -37,7 +37,7 @@ module MacOS
       MacOS::LaunchControl.load(path_to_plist)
     end
 
-    def unload(path_to_plist = @path_to_plist)
+    def unload
       MacOS::LaunchControl.unload(path_to_plist)
     end
 

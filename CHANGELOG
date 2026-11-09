@@ -2,6 +2,12 @@
 
 ## 20261109
 
+0.51.1: ~ MacOS::LaunchControl#unload: It takes no plist, as #load takes none.
+
+1. ~ MacOS::LaunchControl#unload: It unloads the instance's own plist and takes no argument, MacOS::LaunchControl.unload being there for any other.
+2. ~ test/MacOS/LaunchControl_test.rb: An instance raises an ArgumentError where it's given a plist to load or unload.
+3. ~ MacOS::VERSION: /0.51.0/0.51.1/
+
 0.51.0: lib/MacOS.rb --> lib/macos.rb; ~ README.md: A code block per class.
 
 1. lib/MacOS.rb --> lib/macos.rb: The load file is named after the gem, as require 'macos' asks, a capitalised one being found only on a case-insensitive filesystem.
