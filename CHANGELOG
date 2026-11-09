@@ -2,6 +2,12 @@
 
 ## 20261109
 
+0.51.2: ~ MacOS::LaunchControl, MacOS::Dmg: Each reads its own instance variables, rather than their accessors.
+
+1. ~ MacOS::LaunchControl#load, #unload: They read @path_to_plist.
+2. ~ MacOS::Dmg.mount, .run_installer, .unmount: They read @verbose.
+3. ~ MacOS::VERSION: /0.51.1/0.51.2/
+
 0.51.1: ~ MacOS::LaunchControl#unload: It takes no plist, as #load takes none.
 
 1. ~ MacOS::LaunchControl#unload: It unloads the instance's own plist and takes no argument, MacOS::LaunchControl.unload being there for any other.
