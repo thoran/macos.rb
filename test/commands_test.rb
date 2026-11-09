@@ -40,6 +40,10 @@ describe "the commands" do
     _(sent_by(MacOS::DiskUtil, :xml_volume_plist)).must_equal(['diskutil list -plist'])
   end
 
+  it "attaches a disk image with hdiutil" do
+    _(sent_by(MacOS::Dmg, :xml_attach_plist, 'Example App.dmg')).must_equal(['hdiutil attach -plist Example\\ App.dmg'])
+  end
+
   it "asks security for a generic password" do
     _(captured_by(MacOS::Keychain, :find_generic_password, 'ExampleNet')).must_equal(['security find-generic-password -ga ExampleNet'])
   end

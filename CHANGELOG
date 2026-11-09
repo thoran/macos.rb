@@ -1,5 +1,35 @@
 # macos.rb/CHANGELOG
 
+## 20261110
+
+0.52.0: ~ MacOS::Dmg: The mount point is read from hdiutil attach -plist and the package from the volume, rather than either being guessed.
+
+1. ~ MacOS::Dmg.mount: It runs hdiutil attach -plist and returns where the volume was mounted, or nil where nothing was, rather than true or false.
+2. + MacOS::Dmg.xml_attach_plist
+3. + MacOS::Dmg.mounted_volume_path, private.
+4. + MacOS::Dmg.pkg_names: the packages at the top of a mounted volume.
+5. ~ MacOS::Dmg.run_installer, .unmount: Each raises where it's given no mount point, and run_installer where it's given no package.
+6. + MacOS::Dmg.check_mount_point, .check_pkg_name, private.
+7. ~ MacOS::Dmg.full_path_to_mount_point: A path is taken as it is, and only a name as under /Volumes.
+8. ~ MacOS::Dmg.run_installer: It gives installer the package's full path, a name being taken as on the volume and a path as it is, rather than changing into the volume.
+9. + MacOS::Dmg.full_path_to_pkg, private.
+10. ~ MacOS::Dmg.install, #initialize: They take no disk_image_name:, which only fed the guess.
+11. - MacOS::Dmg#disk_image_name, #filename, #dmg_filename, #image_name, and their writers.
+12. ~ MacOS::Dmg#mount: The volume's path becomes its mount point.
+13. ~ MacOS::Dmg#mount_point: It's an attr_accessor, giving the mount point given or mounted, rather than a guess from the disk image's name.
+14. ~ MacOS::Dmg#pkg_name: Where neither it nor the package is given, it's the one package on the mounted volume, rather than a guess from the mount point.
+15. + MacOS::Dmg#mounted_pkg_name, private.
+16. ~ MacOS::Dmg#run_installer, #unmount: They read @mount_point.
+17. ~ MacOS::Dmg#run_installer: Where no package is given, it raises where the volume holds none, or more than one, naming what it found.
+18. + MacOS::Dmg#check_mounted_pkg_names, private.
+19. ~ MacOS::Dmg#install: Where it mounted a volume and can't run the installer, it unmounts the volume before raising.
+20. ~ lib/MacOS/Dmg.rb: It requires plist, and its history comment is removed.
+21. + test/fixtures/hdiutil-attach-plist.xml
+22. ~ test/MacOS/Dmg_test.rb: The mount point is read from hdiutil's plist and the package from the volume; the installer is given the package's full path; a mount point which is a path is taken as it is; and a Dmg without a mount point or a package raises, saying which, and unmounting what it mounted.
+23. ~ test/commands_test.rb: The disk image is attached with hdiutil attach -plist.
+24. ~ README.md: A Dmg is made from its path alone, and its mount point is where the volume was mounted.
+25. ~ MacOS::VERSION: /0.51.2/0.52.0/
+
 ## 20261109
 
 0.51.2: ~ MacOS::LaunchControl, MacOS::Dmg: Each reads its own instance variables, rather than their accessors.
