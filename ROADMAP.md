@@ -21,6 +21,16 @@ Undecided:
 - Whether channel and link_auth give airport's form whichever source they come from.
 - Whether Apple80211 keeps its name once it no longer reads Apple80211.framework's tool.
 
+## What SystemProfiler gives
+
+Each field of system_profiler's software overview has three methods in MacOS::SystemProfiler: one ending in _data, the field as given, one in _string, and a bare name. They differ only for System Version and Kernel Version, where _string gives the version alone and the bare name a Version. For the other seven, the three are the same.
+
+Undecided, and waiting for a minor version or 1.0, since either way system_version and kernel_version would no longer return a Version:
+
+- Whether a field has one method, giving the field as given unless an argument asks for another form, as system_version(as: :string) or system_version(as: :version). Only two fields have anything to interpret, and what is returned would turn on the argument.
+- Or whether each method gives only the field as given, with no argument, and the interpreting is done outside SystemProfiler under names of its own, as MacOS.version is now, or in a class of its own. SystemProfiler would then give what system_profiler gives.
+- Whether the names follow system_profiler's labels, as now, or the keys of its JSON (os_version, local_host_name, secure_vm, system_integrity, uptime), once SystemProfiler reads that. The leaning is the labels.
+
 ## Naming
 
 An instance of MacOS::IfConfig is a network interface, which its name doesn't say.

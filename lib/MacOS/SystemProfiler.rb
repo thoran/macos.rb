@@ -67,6 +67,7 @@ module MacOS
       field('Boot Volume')
     end
     alias_method :boot_volume_string, :boot_volume_data
+    alias_method :boot_volume, :boot_volume_data
 
     def boot_mode_data
       field('Boot Mode')
@@ -84,6 +85,8 @@ module MacOS
       field('User Name')
     end
     alias_method :username_string, :username_data
+    alias_method :user_name, :username_data
+    # username too, it being the word commonly reached for.
     alias_method :username, :username_data
 
     def secure_virtual_memory_data
@@ -106,10 +109,10 @@ module MacOS
 
     # The aliases as module functions too, alias_method making instance methods alone.
     module_function(
-      :boot_volume_string,
+      :boot_volume_string, :boot_volume,
       :boot_mode_string, :boot_mode,
       :computer_name_string, :computer_name,
-      :username_string, :username,
+      :username_string, :user_name, :username,
       :secure_virtual_memory_string, :secure_virtual_memory,
       :system_integrity_protection_string, :system_integrity_protection,
       :time_since_boot_string, :time_since_boot
