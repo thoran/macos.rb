@@ -54,9 +54,15 @@ describe MacOS::LaunchControl do
       _(commands).must_equal([["launchctl load -w #{plist}"], ["launchctl unload -w #{plist}"]])
     end
 
-    it "unloads another plist where it's given one" do
-      commands = with_plists('/tmp/other.plist'){commands_run_by(MacOS::LaunchControl){MacOS::LaunchControl.new.unload('/tmp/other.plist')}}
-      _(commands).must_equal([['launchctl unload -w /tmp/other.plist']])
+    it "raises where it's given a plist to load or unload, running nothing" do
+      launch_control = MacOS::LaunchControl.new(plist)
+      commands = with_plists(plist, '/tmp/other.plist') do
+        commands_run_by(MacOS::LaunchControl) do
+          _{launch_control.load('/tmp/other.plist')}.must_raise(ArgumentError)
+          _{launch_control.unload('/tmp/other.plist')}.must_raise(ArgumentError)
+        end
+      end
+      _(commands).must_equal([])
     end
 
     it "raises where it was made without a plist" do
