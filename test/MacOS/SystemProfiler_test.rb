@@ -46,10 +46,10 @@ describe MacOS::SystemProfiler do
     it "reads each, by its method and by its aliases" do
       with_output do
         sp = MacOS::SystemProfiler
-        _([sp.boot_volume_data, sp.boot_volume_string]).must_equal(['Macintosh HD'] * 2)
+        _([sp.boot_volume_data, sp.boot_volume_string, sp.boot_volume]).must_equal(['Macintosh HD'] * 3)
         _([sp.boot_mode_data, sp.boot_mode_string, sp.boot_mode]).must_equal(['Normal'] * 3)
         _([sp.computer_name_data, sp.computer_name_string, sp.computer_name]).must_equal(['Example Mac'] * 3)
-        _([sp.username_data, sp.username_string, sp.username]).must_equal(['Example User (example)'] * 3)
+        _([sp.username_data, sp.username_string, sp.user_name, sp.username]).must_equal(['Example User (example)'] * 4)
         _([sp.secure_virtual_memory_data, sp.secure_virtual_memory_string, sp.secure_virtual_memory]).must_equal(['Enabled'] * 3)
         _([sp.system_integrity_protection_data, sp.system_integrity_protection_string, sp.system_integrity_protection]).must_equal(['Enabled'] * 3)
         _([sp.time_since_boot_data, sp.time_since_boot_string, sp.time_since_boot]).must_equal(['6 days, 2 hours, 34 minutes'] * 3)

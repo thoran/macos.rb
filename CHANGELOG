@@ -1,5 +1,15 @@
 # macos.rb/CHANGELOG
 
+## 20261109
+
+0.50.7: + MacOS::SystemProfiler.user_name, .boot_volume
+
+1. + MacOS::SystemProfiler.user_name, an alias of username_data, named as system_profiler names the field.
+2. + MacOS::SystemProfiler.boot_volume, an alias of boot_volume_data. It alone of the fields had no bare name, 0.22.0 having pointed boot_mode at boot_volume_data in its place.
+3. ~ ROADMAP.md: A section on what SystemProfiler gives, and what is undecided about it.
+4. ~ test/MacOS/SystemProfiler_test.rb: The user name and boot volume are read by user_name and boot_volume, as by their other names.
+5. ~ MacOS::VERSION: /0.50.6/0.50.7/
+
 ## 20261108
 
 0.50.6: ~ MacOS::Applications, MacOS::LaunchControl: They raise where there is nothing to act on.
