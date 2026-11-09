@@ -12,22 +12,22 @@ module MacOS
       attr_accessor :verbose
 
       def mount(path_to_dmg)
-        puts "hdiutil attach #{Shellwords.escape(path_to_dmg)}" if verbose
+        puts "hdiutil attach #{Shellwords.escape(path_to_dmg)}" if @verbose
         system "hdiutil attach #{Shellwords.escape(path_to_dmg)}"
       end
       alias_method :attach, :mount
 
       def run_installer(mount_point:, pkg_name:)
         starting_working_directory = Dir.pwd
-        puts "cd #{full_path_to_mount_point(mount_point)}" if verbose
+        puts "cd #{full_path_to_mount_point(mount_point)}" if @verbose
         Dir.chdir(full_path_to_mount_point(mount_point))
-        puts "sudo installer -pkg #{Shellwords.escape(pkg_name)} -target '/'" if verbose
+        puts "sudo installer -pkg #{Shellwords.escape(pkg_name)} -target '/'" if @verbose
         system "sudo installer -pkg #{Shellwords.escape(pkg_name)} -target '/'"
         Dir.chdir(starting_working_directory)
       end
 
       def unmount(mount_point)
-        puts "hdiutil detach -Force #{Shellwords.escape(full_path_to_mount_point(mount_point))}" if verbose
+        puts "hdiutil detach -Force #{Shellwords.escape(full_path_to_mount_point(mount_point))}" if @verbose
         system "hdiutil detach -Force #{Shellwords.escape(full_path_to_mount_point(mount_point))}"
       end
       alias_method :detach, :unmount

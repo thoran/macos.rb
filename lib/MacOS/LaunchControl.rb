@@ -34,11 +34,11 @@ module MacOS
     end
 
     def load
-      MacOS::LaunchControl.load(path_to_plist)
+      MacOS::LaunchControl.load(@path_to_plist)
     end
 
     def unload
-      MacOS::LaunchControl.unload(path_to_plist)
+      MacOS::LaunchControl.unload(@path_to_plist)
     end
 
   end
