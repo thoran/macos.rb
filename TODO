@@ -4,5 +4,7 @@
 2. + MacOS.boot_time, the time the Mac booted, from sysctl kern.boottime.
 3. ~ MacOS::Defaults#to_yaml: Nested values as further levels of YAML, rather than as hashes.
 4. ~ MacOS::DiskUtil.external_volumes: Only the external volumes, rather than every mounted one.
-5. ~ MacOS::SystemProfiler, MacOS::USBFlashDrive, MacOS::Apple80211: system_profiler -json in place of its text, which is translated outside an English locale.
+5. ~ MacOS::SystemProfiler: system_profiler -json in place of its text, which is translated outside an English locale, each field as the JSON gives it, under its label's name; - system_version_string, kernel_version_string, major_system_version, minor_system_version, tiny_system_version, kernel_name and Version, the interpreting being MacOS's.
 6. ~ test/MacOS/Applications_test.rb: Stubs in place of a temporary directory.
+7. ~ MacOS::USBFlashDrive: system_profiler -json in place of its text.
+8. ~ MacOS::Apple80211: system_profiler -json in place of its text, where airport gives nothing, in the form The Wi-Fi connection in PROPOSED.md settles.

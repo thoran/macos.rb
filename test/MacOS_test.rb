@@ -15,9 +15,29 @@ describe MacOS do
     }.each{|name| _(MacOS.const_get(name)).wont_be_nil}
   end
 
-  it "gives the system's version" do
-    MacOS::SystemProfiler.stub(:system_profiler_output, fixture('system_profiler-SPSoftwareDataType.txt')) do
+  def with_output(output = fixture('system_profiler-SPSoftwareDataType.txt'), &block)
+    MacOS::SystemProfiler.stub(:system_profiler_output, output, &block)
+  end
+
+  it "gives the system's version, as a Version" do
+    with_output do
+      _(MacOS.version).must_be_instance_of(Version)
       _(MacOS.version.to_s).must_equal('15.8.1')
+      _(MacOS.version.major).must_equal('15')
+    end
+  end
+
+  it "gives the version of an older OS X" do
+    with_output("      System Version: Mac OS X 10.9.5 (13F34)\n") do
+      _(MacOS.version.to_s).must_equal('10.9.5')
+    end
+  end
+
+  it "gives the kernel's name, and its version as a Version" do
+    with_output do
+      _(MacOS.kernel_name).must_equal('Darwin')
+      _(MacOS.kernel_version).must_be_instance_of(Version)
+      _(MacOS.kernel_version.to_s).must_equal('24.6.0')
     end
   end
 end

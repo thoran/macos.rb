@@ -2,6 +2,17 @@
 
 ## 20261110
 
+0.53.0: ~ MacOS: It reads the system's and the kernel's versions from SystemProfiler's fields itself; + MacOS.kernel_version, MacOS.kernel_name.
+
+1. ~ MacOS.version: It takes the version from SystemProfiler.system_version_data, rather than from SystemProfiler.system_version, so as SystemProfiler can come to give each field as system_profiler gives it.
+2. + MacOS.kernel_name, MacOS.kernel_version: The kernel's name, and its version as a Version, from SystemProfiler.kernel_version_data.
+3. ~ lib/macos.rb: + require 'Version'.
+4. ~ test/MacOS_test.rb: The version is a Version, an older OS X's is read, and the kernel's name and version are given.
+5. ~ README.md: MacOS.kernel_version and MacOS.kernel_name are shown.
+6. ~ PROPOSED.md: - What SystemProfiler gives, settled: each field as system_profiler gives it, under its label's name, the interpreting done in MacOS. Without Version and the 1.0 tidy follow from it.
+7. ~ TODO: Item 5 is SystemProfiler alone, as settled; + 7, USBFlashDrive; + 8, Apple80211.
+8. ~ MacOS::VERSION: /0.52.1/0.53.0/
+
 0.52.1: + PROPOSED.md: What is undecided, moved out of ROADMAP.md.
 
 1. + PROPOSED.md: What is undecided, under a heading for each theme or change. It takes what ROADMAP.md had undecided, and adds Without Version, a second form of shortcut for NSUserKeyEquivalents, disk images with a licence agreement, and the 1.0 tidy.

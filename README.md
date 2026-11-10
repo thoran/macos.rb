@@ -50,6 +50,12 @@ MacOS.version.major
 
 MacOS.version >= '14.0'
 # => true
+
+MacOS.kernel_version
+# => #<Version @version_string="24.6.0">
+
+MacOS.kernel_name
+# => "Darwin"
 ```
 
 ### MacOS::Apple80211

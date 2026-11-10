@@ -19,21 +19,11 @@ An instance of MacOS::IfConfig is a network interface, which its name doesn't sa
 
 - Whether to rename it, MacOS::NetworkInterface say, keeping IfConfig as an alias for a while, and when.
 
-## What SystemProfiler gives
-
-Each field of system_profiler's software overview has three methods in MacOS::SystemProfiler: one ending in _data, the field as given, one in _string, and a bare name. They differ only for System Version and Kernel Version, where _string gives the version alone and the bare name a Version. For the other seven, the three are the same.
-
-Waiting for a minor version or 1.0, since either way system_version and kernel_version would no longer return a Version:
-
-- Whether a field has one method, giving the field as given unless an argument asks for another form, as system_version(as: :string) or system_version(as: :version). Only two fields have anything to interpret, and what is returned would turn on the argument.
-- Or whether each method gives only the field as given, with no argument, and the interpreting is done outside SystemProfiler under names of its own, as MacOS.version is now, or in a class of its own. SystemProfiler would then give what system_profiler gives.
-- Whether the names follow system_profiler's labels, as now, or the keys of its JSON (os_version, local_host_name, secure_vm, system_integrity, uptime), once SystemProfiler reads that. The leaning is the labels.
-
 ## Without Version
 
-system_version and kernel_version return a Version, taken from Version 0.14.0, which brings Array#second, Module#alias_methods and String#capture into every program loading macos.rb.
+MacOS.version and MacOS.kernel_version return a Version, taken from Version 0.14.0, which brings Array#second, Module#alias_methods and String#capture into every program loading macos.rb. So do SystemProfiler's system_version and kernel_version, until they give the field alone.
 
-- Whether Version goes, which turns on what SystemProfiler gives: where the interpreting is done outside SystemProfiler, Version is needed only there, or not at all.
+- Whether Version goes, or stays for MacOS.version and MacOS.kernel_version alone.
 
 ## A second form of shortcut for NSUserKeyEquivalents
 
@@ -54,5 +44,5 @@ hdiutil attach shows an image's licence agreement and waits for an answer, so th
 ## The 1.0 tidy
 
 - Whether a library which has no instances, as Apple80211, DiskUtil, Keychain and USBFlashDrive have none, is a module, as Applications, SystemProfiler, Users and VPN are.
-- Whether the _data and _string aliases go, which turns on what SystemProfiler gives.
+- Whether the _data and _string aliases go.
 - Whether a field which macOS gives as Yes or No is given as true or false.
