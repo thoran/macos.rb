@@ -2,6 +2,13 @@
 
 ## 20261110
 
+0.52.1: + PROPOSED.md: What is undecided, moved out of ROADMAP.md.
+
+1. + PROPOSED.md: What is undecided, under a heading for each theme or change. It takes what ROADMAP.md had undecided, and adds Without Version, a second form of shortcut for NSUserKeyEquivalents, disk images with a licence agreement, and the 1.0 tidy.
+2. ~ ROADMAP.md: The direction alone. Naming and What SystemProfiler gives held only what is undecided, and are gone.
+3. ~ TODO: Two jobs, system_profiler -json in place of its text, and stubs in place of Applications_test's temporary directory.
+4. ~ MacOS::VERSION: /0.52.0/0.52.1/
+
 0.52.0: ~ MacOS::Dmg: The mount point is read from hdiutil attach -plist and the package from the volume, rather than either being guessed.
 
 1. ~ MacOS::Dmg.mount: It runs hdiutil attach -plist and returns where the volume was mounted, or nil where nothing was, rather than true or false.
