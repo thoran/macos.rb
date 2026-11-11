@@ -252,17 +252,18 @@ launch_control.unload
 ```ruby
 require 'MacOS/SystemProfiler'
 
-MacOS::SystemProfiler.kernel_version
-# => #<Version @version_string="24.6.0">
+# Each field as system_profiler -json gives it. MacOS.version and MacOS.kernel_version read the versions from it.
+MacOS::SystemProfiler.system_version
+# => "macOS 15.8.1 (24H32)"
 
 MacOS::SystemProfiler.boot_mode
-# => "Normal"
+# => "normal_boot"
 
 MacOS::SystemProfiler.computer_name
 # => "Example Mac"
 
 MacOS::SystemProfiler.time_since_boot
-# => "6 days, 2 hours, 34 minutes"
+# => "up 6:02:34:00"
 ```
 
 ### MacOS::USBFlashDrive

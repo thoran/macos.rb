@@ -1,10 +1,10 @@
 # MacOS/SystemProfiler.rb
 # MacOS::SystemProfiler
 
-# Description: This uses the built-in system_profiler command on MacOS to get access to the version numbers on any
-# version of MacOS which has a system_profiler command and which returns results in a known format.
+# Description: This uses the built-in system_profiler command on MacOS to read the software overview, each field as
+# system_profiler's JSON gives it, on any version of MacOS whose system_profiler takes -json.
 
-require 'Version'
+require 'json'
 
 module MacOS
   module SystemProfiler
@@ -12,110 +12,80 @@ module MacOS
     module_function
 
     def system_profiler_output
-      `system_profiler SPSoftwareDataType`.force_encoding('UTF-8')
+      `system_profiler -json SPSoftwareDataType`.force_encoding('UTF-8')
     end
 
-    # The value system_profiler gives for a field, such as 'Boot Volume'.
-    def field(name)
-      system_profiler_output[/#{Regexp.escape(name)}: (?<value>.+)$/, :value]
+    # The value system_profiler gives under a key of its JSON, such as boot_volume.
+    def field(key)
+      JSON.parse(system_profiler_output)['SPSoftwareDataType'].first[key]
     end
     private_class_method :field
 
-    def system_version_data
-      field('System Version')
-    end
-
-    def system_version_string
-      earlier_versions = system_version_data.split[3] # OSX 10.4 to 10.9 at least
-      later_versions = system_version_data.split[1] # MacOS 10.14 at least
-      earlier_versions || later_versions
-    end
-
     def system_version
-      Version.new(system_version_string)
+      field('os_version')
     end
-
-    def major_system_version
-      system_version.major
-    end
-
-    def minor_system_version
-      system_version.minor
-    end
-
-    def tiny_system_version
-      system_version.tiny
-    end
-
-    def kernel_version_data
-      field('Kernel Version')
-    end
-
-    def kernel_name
-      kernel_version_data.split.first
-    end
-
-    def kernel_version_string
-      kernel_version_data.split.last
-    end
+    alias_method :system_version_data, :system_version
 
     def kernel_version
-      Version.new(kernel_version_string)
+      field('kernel_version')
     end
+    alias_method :kernel_version_data, :kernel_version
 
-    def boot_volume_data
-      field('Boot Volume')
+    def boot_volume
+      field('boot_volume')
     end
-    alias_method :boot_volume_string, :boot_volume_data
-    alias_method :boot_volume, :boot_volume_data
+    alias_method :boot_volume_data, :boot_volume
+    alias_method :boot_volume_string, :boot_volume
 
-    def boot_mode_data
-      field('Boot Mode')
+    def boot_mode
+      field('boot_mode')
     end
-    alias_method :boot_mode_string, :boot_mode_data
-    alias_method :boot_mode, :boot_mode_data
+    alias_method :boot_mode_data, :boot_mode
+    alias_method :boot_mode_string, :boot_mode
 
-    def computer_name_data
-      field('Computer Name')
+    def computer_name
+      field('local_host_name')
     end
-    alias_method :computer_name_string, :computer_name_data
-    alias_method :computer_name, :computer_name_data
+    alias_method :computer_name_data, :computer_name
+    alias_method :computer_name_string, :computer_name
 
-    def username_data
-      field('User Name')
+    def user_name
+      field('user_name')
     end
-    alias_method :username_string, :username_data
-    alias_method :user_name, :username_data
+    alias_method :username_data, :user_name
+    alias_method :username_string, :user_name
     # username too, it being the word commonly reached for.
-    alias_method :username, :username_data
+    alias_method :username, :user_name
 
-    def secure_virtual_memory_data
-      field('Secure Virtual Memory')
+    def secure_virtual_memory
+      field('secure_vm')
     end
-    alias_method :secure_virtual_memory_string, :secure_virtual_memory_data
-    alias_method :secure_virtual_memory, :secure_virtual_memory_data
+    alias_method :secure_virtual_memory_data, :secure_virtual_memory
+    alias_method :secure_virtual_memory_string, :secure_virtual_memory
 
-    def system_integrity_protection_data
-      field('System Integrity Protection')
+    def system_integrity_protection
+      field('system_integrity')
     end
-    alias_method :system_integrity_protection_string, :system_integrity_protection_data
-    alias_method :system_integrity_protection, :system_integrity_protection_data
+    alias_method :system_integrity_protection_data, :system_integrity_protection
+    alias_method :system_integrity_protection_string, :system_integrity_protection
 
-    def time_since_boot_data
-      field('Time since boot')
+    def time_since_boot
+      field('uptime')
     end
-    alias_method :time_since_boot_string, :time_since_boot_data
-    alias_method :time_since_boot, :time_since_boot_data
+    alias_method :time_since_boot_data, :time_since_boot
+    alias_method :time_since_boot_string, :time_since_boot
 
     # The aliases as module functions too, alias_method making instance methods alone.
     module_function(
-      :boot_volume_string, :boot_volume,
-      :boot_mode_string, :boot_mode,
-      :computer_name_string, :computer_name,
-      :username_string, :user_name, :username,
-      :secure_virtual_memory_string, :secure_virtual_memory,
-      :system_integrity_protection_string, :system_integrity_protection,
-      :time_since_boot_string, :time_since_boot
+      :system_version_data,
+      :kernel_version_data,
+      :boot_volume_data, :boot_volume_string,
+      :boot_mode_data, :boot_mode_string,
+      :computer_name_data, :computer_name_string,
+      :username_data, :username_string, :username,
+      :secure_virtual_memory_data, :secure_virtual_memory_string,
+      :system_integrity_protection_data, :system_integrity_protection_string,
+      :time_since_boot_data, :time_since_boot_string
     )
 
   end

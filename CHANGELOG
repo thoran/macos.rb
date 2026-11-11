@@ -1,5 +1,27 @@
 # macos.rb/CHANGELOG
 
+## 20261111
+
+0.54.0: ~ MacOS::SystemProfiler: It reads system_profiler -json, giving each field as the JSON gives it; - its interpreting methods.
+
+1. ~ MacOS::SystemProfiler.system_profiler_output: It runs system_profiler -json SPSoftwareDataType, the text being translated outside an English locale.
+2. ~ MacOS::SystemProfiler.field: It reads a key of the JSON, rather than matching a label in the text.
+3. ~ MacOS::SystemProfiler.system_version, .kernel_version: Each gives the field, as macOS 15.8.1 (24H32), rather than a Version.
+4. ~ MacOS::SystemProfiler.boot_mode, .secure_virtual_memory, .system_integrity_protection, .time_since_boot: Each gives the JSON's value, as normal_boot or up 6:02:34:00, rather than the text's.
+5. ~ MacOS::SystemProfiler: Each field is defined under its label's name, its _data and _string forms being aliases of it.
+6. - MacOS::SystemProfiler.system_version_string, .kernel_version_string, .major_system_version, .minor_system_version, .tiny_system_version, .kernel_name: The interpreting is MacOS's.
+7. ~ lib/MacOS/SystemProfiler.rb: - require 'Version', + require 'json'.
+8. ~ MacOS.version, .kernel_name, .kernel_version: They read SystemProfiler.system_version and .kernel_version, rather than the _data aliases, which wait on the 1.0 tidy.
+9. + test/fixtures/system_profiler-SPSoftwareDataType.json
+10. - test/fixtures/system_profiler-SPSoftwareDataType.txt
+11. ~ test/MacOS/SystemProfiler_test.rb: Each field is given as the JSON gives it, and the interpreting methods are gone.
+12. ~ test/MacOS_test.rb: The versions are read from the JSON fixture, and an older OS X's from JSON.
+13. ~ test/commands_test.rb: The system_profiler command takes -json.
+14. ~ README.md: The SystemProfiler block shows the fields as the JSON gives them.
+15. ~ PROPOSED.md: Without Version no longer says SystemProfiler returns a Version.
+16. ~ TODO: - 5, done, the rest renumbered.
+17. ~ MacOS::VERSION: /0.53.0/0.54.0/
+
 ## 20261110
 
 0.53.0: ~ MacOS: It reads the system's and the kernel's versions from SystemProfiler's fields itself; + MacOS.kernel_version, MacOS.kernel_name.

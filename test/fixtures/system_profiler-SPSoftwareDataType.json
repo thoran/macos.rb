@@ -1,0 +1,16 @@
+{
+  "SPSoftwareDataType" : [
+    {
+      "_name" : "os_overview",
+      "boot_mode" : "normal_boot",
+      "boot_volume" : "Macintosh HD",
+      "kernel_version" : "Darwin 24.6.0",
+      "local_host_name" : "Example Mac",
+      "os_version" : "macOS 15.8.1 (24H32)",
+      "secure_vm" : "secure_vm_enabled",
+      "system_integrity" : "integrity_enabled",
+      "uptime" : "up 6:02:34:00",
+      "user_name" : "Example User (example)"
+    }
+  ]
+}

@@ -21,7 +21,7 @@ An instance of MacOS::IfConfig is a network interface, which its name doesn't sa
 
 ## Without Version
 
-MacOS.version and MacOS.kernel_version return a Version, taken from Version 0.14.0, which brings Array#second, Module#alias_methods and String#capture into every program loading macos.rb. So do SystemProfiler's system_version and kernel_version, until they give the field alone.
+MacOS.version and MacOS.kernel_version return a Version, taken from Version 0.14.0, which brings Array#second, Module#alias_methods and String#capture into every program loading macos.rb.
 
 - Whether Version goes, or stays for MacOS.version and MacOS.kernel_version alone.
 

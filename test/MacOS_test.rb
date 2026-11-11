@@ -15,7 +15,7 @@ describe MacOS do
     }.each{|name| _(MacOS.const_get(name)).wont_be_nil}
   end
 
-  def with_output(output = fixture('system_profiler-SPSoftwareDataType.txt'), &block)
+  def with_output(output = fixture('system_profiler-SPSoftwareDataType.json'), &block)
     MacOS::SystemProfiler.stub(:system_profiler_output, output, &block)
   end
 
@@ -28,7 +28,7 @@ describe MacOS do
   end
 
   it "gives the version of an older OS X" do
-    with_output("      System Version: Mac OS X 10.9.5 (13F34)\n") do
+    with_output('{"SPSoftwareDataType": [{"os_version": "Mac OS X 10.9.5 (13F34)"}]}') do
       _(MacOS.version.to_s).must_equal('10.9.5')
     end
   end

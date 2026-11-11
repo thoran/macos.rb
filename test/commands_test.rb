@@ -25,7 +25,7 @@ describe "the commands" do
   end
 
   it "reads the software overview with system_profiler" do
-    _(sent_by(MacOS::SystemProfiler, :system_profiler_output)).must_equal(['system_profiler SPSoftwareDataType'])
+    _(sent_by(MacOS::SystemProfiler, :system_profiler_output)).must_equal(['system_profiler -json SPSoftwareDataType'])
   end
 
   it "reads the Wi-Fi connection with system_profiler" do

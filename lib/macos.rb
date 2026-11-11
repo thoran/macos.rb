@@ -25,17 +25,17 @@ module MacOS
 
   # The version in System Version, as 15.8.1 in macOS 15.8.1 (24H32), or 10.9.5 in Mac OS X 10.9.5 (13F34).
   def version
-    system_version = MacOS::SystemProfiler.system_version_data
+    system_version = MacOS::SystemProfiler.system_version
     Version.new(system_version.split[3] || system_version.split[1])
   end
 
   # The name in Kernel Version, as Darwin in Darwin 24.6.0.
   def kernel_name
-    MacOS::SystemProfiler.kernel_version_data.split.first
+    MacOS::SystemProfiler.kernel_version.split.first
   end
 
   # The version in Kernel Version, as 24.6.0 in Darwin 24.6.0.
   def kernel_version
-    Version.new(MacOS::SystemProfiler.kernel_version_data.split.last)
+    Version.new(MacOS::SystemProfiler.kernel_version.split.last)
   end
 end
