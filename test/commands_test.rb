@@ -49,6 +49,6 @@ describe "the commands" do
   end
 
   it "asks system_profiler for the USB devices" do
-    _(captured_by(MacOS::USBFlashDrive, :raw_system_profiler_output)).must_equal(['system_profiler SPUSBDataType'])
+    _(captured_by(MacOS::USBFlashDrive, :raw_system_profiler_output)).must_equal(['system_profiler -json SPUSBDataType'])
   end
 end

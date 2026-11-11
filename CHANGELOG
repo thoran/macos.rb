@@ -2,6 +2,19 @@
 
 ## 20261111
 
+0.55.0: ~ MacOS::USBFlashDrive: It reads the mount points from system_profiler -json, rather than from its text.
+
+1. ~ MacOS::USBFlashDrive.system_profiler_usb_data_type_command: It runs system_profiler -json SPUSBDataType, the text being translated outside an English locale.
+2. ~ MacOS::USBFlashDrive.all_mount_points: It takes each volume's mount_point from the JSON, a volume not mounted having none.
+3. + MacOS::USBFlashDrive.volumes, private: Every volume of every device, behind a hub or not.
+4. ~ lib/MacOS/USBFlashDrive.rb: + require 'json'.
+5. + test/fixtures/system_profiler-SPUSBDataType.json: The keys of a real capture, with example values.
+6. - test/fixtures/system_profiler-SPUSBDataType.txt
+7. ~ test/MacOS/USBFlashDrive_test.rb: Mount points are found behind a hub or not, and none for a volume not mounted or where no drive is plugged in.
+8. ~ test/commands_test.rb: The system_profiler command takes -json.
+9. ~ TODO: - 6, done, the rest renumbered.
+10. ~ MacOS::VERSION: /0.54.0/0.55.0/
+
 0.54.0: ~ MacOS::SystemProfiler: It reads system_profiler -json, giving each field as the JSON gives it; - its interpreting methods.
 
 1. ~ MacOS::SystemProfiler.system_profiler_output: It runs system_profiler -json SPSoftwareDataType, the text being translated outside an English locale.

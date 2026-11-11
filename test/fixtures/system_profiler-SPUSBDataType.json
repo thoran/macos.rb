@@ -1,0 +1,147 @@
+{
+  "SPUSBDataType" : [
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleUSBXHCI"
+    },
+    {
+      "_name" : "USB31Bus",
+      "host_controller" : "AppleUSBXHCI",
+      "_items" : [
+        {
+          "_name" : "USB3.1 Hub",
+          "bcd_device" : "1.00",
+          "bus_power" : "900",
+          "bus_power_used" : "896",
+          "device_speed" : "super_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x01100000",
+          "manufacturer" : "Example",
+          "product_id" : "0x0000",
+          "vendor_id" : "0x0000",
+          "_items" : [
+            {
+              "_name" : "Flash Drive",
+              "bcd_device" : "1.00",
+              "bus_power" : "900",
+              "bus_power_used" : "896",
+              "device_speed" : "super_speed",
+              "extra_current_used" : "0",
+              "location_id" : "0x01100000",
+              "manufacturer" : "Example",
+              "product_id" : "0x0000",
+              "serial_num" : "EXAMPLE000000000",
+              "vendor_id" : "0x0000",
+              "Media" : [
+                {
+                  "_name" : "Flash Drive",
+                  "bsd_name" : "disk4",
+                  "Logical Unit" : 0,
+                  "partition_map_type" : "master_boot_record_partition_map_type",
+                  "removable_media" : "yes",
+                  "size" : "32 GB",
+                  "size_in_bytes" : 32000000000,
+                  "smart_status" : "Verified",
+                  "USB Interface" : 0,
+                  "volumes" : [
+                    {
+                      "_name" : "EXAMPLE",
+                      "bsd_name" : "disk4s1",
+                      "file_system" : "MS-DOS FAT32",
+                      "free_space" : "31.9 GB",
+                      "free_space_in_bytes" : 31900000000,
+                      "iocontent" : "Windows_FAT_32",
+                      "mount_point" : "/Volumes/EXAMPLE",
+                      "size" : "32 GB",
+                      "size_in_bytes" : 32000000000,
+                      "volume_uuid" : "00000000-0000-0000-0000-000000000000",
+                      "writable" : "yes"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "_name" : "Flash Drive",
+              "bcd_device" : "1.00",
+              "bus_power" : "900",
+              "bus_power_used" : "896",
+              "device_speed" : "super_speed",
+              "extra_current_used" : "0",
+              "location_id" : "0x01100000",
+              "manufacturer" : "Example",
+              "product_id" : "0x0000",
+              "serial_num" : "EXAMPLE000000000",
+              "vendor_id" : "0x0000",
+              "Media" : [
+                {
+                  "_name" : "Flash Drive",
+                  "bsd_name" : "disk4",
+                  "Logical Unit" : 0,
+                  "partition_map_type" : "master_boot_record_partition_map_type",
+                  "removable_media" : "yes",
+                  "size" : "32 GB",
+                  "size_in_bytes" : 32000000000,
+                  "smart_status" : "Verified",
+                  "USB Interface" : 0,
+                  "volumes" : [
+                    {
+                      "_name" : "EXAMPLE 3",
+                      "bsd_name" : "disk6s1",
+                      "file_system" : "MS-DOS FAT32",
+                      "iocontent" : "Windows_FAT_32",
+                      "size" : "32 GB",
+                      "size_in_bytes" : 32000000000,
+                      "volume_uuid" : "00000000-0000-0000-0000-000000000000"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_name" : "Flash Drive",
+          "bcd_device" : "1.00",
+          "bus_power" : "900",
+          "bus_power_used" : "896",
+          "device_speed" : "super_speed",
+          "extra_current_used" : "0",
+          "location_id" : "0x01100000",
+          "manufacturer" : "Example",
+          "product_id" : "0x0000",
+          "serial_num" : "EXAMPLE000000000",
+          "vendor_id" : "0x0000",
+          "Media" : [
+            {
+              "_name" : "Flash Drive",
+              "bsd_name" : "disk4",
+              "Logical Unit" : 0,
+              "partition_map_type" : "master_boot_record_partition_map_type",
+              "removable_media" : "yes",
+              "size" : "32 GB",
+              "size_in_bytes" : 32000000000,
+              "smart_status" : "Verified",
+              "USB Interface" : 0,
+              "volumes" : [
+                {
+                  "_name" : "Example 2",
+                  "bsd_name" : "disk5s1",
+                  "file_system" : "MS-DOS FAT32",
+                  "free_space" : "31.9 GB",
+                  "free_space_in_bytes" : 31900000000,
+                  "iocontent" : "Windows_FAT_32",
+                  "mount_point" : "/Volumes/Example 2",
+                  "size" : "32 GB",
+                  "size_in_bytes" : 32000000000,
+                  "volume_uuid" : "00000000-0000-0000-0000-000000000000",
+                  "writable" : "yes"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
